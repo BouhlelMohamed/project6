@@ -8,11 +8,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthentificationController extends AbstractController
 {
     /**
-     * @Route("/authentification", name="authentification")
+     * @Route("/login", name="login")
      */
-    public function index()
+    public function login()
     {
-        return $this->render('authentification/index.html.twig', [
+        return $this->render('authentification/login.html.twig', [
+            'controller_name' => 'AuthentificationController',
+        ]);
+    }
+
+    /**
+     * @Route("/register", name="register")
+     */
+    public function register()
+    {
+        return $this->render('authentification/register.html.twig', [
             'controller_name' => 'AuthentificationController',
         ]);
     }
