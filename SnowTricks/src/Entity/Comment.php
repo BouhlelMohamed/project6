@@ -23,29 +23,19 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
-<<<<<<< HEAD
      */
     private $user;
-=======
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $author;
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
-<<<<<<< HEAD
     private $Trick;
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
-=======
-    private $trick;
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
 
     public function getId(): ?int
     {
@@ -64,7 +54,6 @@ class Comment
         return $this;
     }
 
-<<<<<<< HEAD
     public function getUser(): ?User
     {
         return $this->user;
@@ -73,23 +62,12 @@ class Comment
     public function setUser(?User $user): self
     {
         $this->user = $user;
-=======
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
 
         return $this;
     }
 
     public function getTrick(): ?Trick
     {
-<<<<<<< HEAD
         return $this->Trick;
     }
 
@@ -108,14 +86,6 @@ class Comment
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-=======
-        return $this->trick;
-    }
-
-    public function setTrick(?Trick $trick): self
-    {
-        $this->trick = $trick;
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
 
         return $this;
     }

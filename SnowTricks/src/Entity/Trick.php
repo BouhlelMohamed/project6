@@ -21,26 +21,15 @@ class Trick
     /**
      * @ORM\Column(type="string", length=255)
      */
-<<<<<<< HEAD
     private $nom;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-=======
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
      */
     private $description;
 
     /**
-<<<<<<< HEAD
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="Trick")
-=======
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick")
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
      */
     private $comments;
 
@@ -54,7 +43,6 @@ class Trick
         return $this->id;
     }
 
-<<<<<<< HEAD
     public function getNom(): ?string
     {
         return $this->nom;
@@ -63,16 +51,6 @@ class Trick
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-=======
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
 
         return $this;
     }
@@ -82,11 +60,7 @@ class Trick
         return $this->description;
     }
 
-<<<<<<< HEAD
     public function setDescription(?string $description): self
-=======
-    public function setDescription(string $description): self
->>>>>>> e5894879c9bfff14901baeef334188b56858ff5d
     {
         $this->description = $description;
 
