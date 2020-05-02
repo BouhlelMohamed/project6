@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  */
 class Comment
-{s
+{
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
