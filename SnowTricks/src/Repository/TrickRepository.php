@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Trick;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Image;
 
 /**
  * @method Trick|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,19 +24,20 @@ class TrickRepository extends ServiceEntityRepository
     // /**
     //  * @return Trick[] Returns an array of Trick objects
     //  */
-    /*
-    public function findByExampleField($value)
+/*     
+    public function findAllWithImages()
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT t
+            FROM App\Entity\Trick t
+            INNER JOIN App\Entity\Image i
+            WHERE i.trick = t.id
+            ');
+
+        return $query->getResult();
     }
-    */
+     */
 
     /*
     public function findOneBySomeField($value): ?Trick
