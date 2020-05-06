@@ -1,3 +1,4 @@
+
 $(window).load(function() {
     $("#flexiselDemo3").flexisel({
         visibleItems: 5,
@@ -22,3 +23,8 @@ $(window).load(function() {
         }
     });
 });
+
+$('.carousel').carousel({
+    interval: 2000
+  })
+
