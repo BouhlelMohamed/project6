@@ -1,19 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                <img class="d-block w-100" src="images/slider/293266.jpg" alt="First slide">
-                </div>
-                <div class="carousel-item">
-                <img class="d-block w-100" src="images/slider/1368764101_8623.jpg" alt="Second slide">
-                </div>
-                <div class="carousel-item">
-                <img class="d-block w-100" src="images/slider/thumb-1920-183974.jpg" alt="Third slide">
-                </div>
-            </div>
-        </div>
+
+        <!-- navbar -->
+        {{ block('navbar') }}
+        <!-- cover -->
+        {% include 'home/base/cover.html.twig' %}
+
+{#         <!-- Slider Snow -->
 	    <div class="main">
             <div class="content-top">
                 <ul id="flexiselDemo3">
@@ -24,7 +18,14 @@
                     <li><img src="images/board5.jpg" /></li>
                 </ul>
             </div>
-	    </div>
+	    </div> #}
+
+        <!-- snow -->
+        {% include 'home/base/snow.html.twig' %}
+
+        <!-- footer -->
+        {{ block('footer') }}
+
 	
     {% for trick in tricks %}
 

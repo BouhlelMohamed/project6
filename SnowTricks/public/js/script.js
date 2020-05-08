@@ -1,5 +1,5 @@
 
-$(window).load(function() {
+$( document ).ready(function() {
     $("#flexiselDemo3").flexisel({
         visibleItems: 5,
         animationSpeed: 1000,
@@ -23,8 +23,7 @@ $(window).load(function() {
         }
     });
 });
-
 $('.carousel').carousel({
     interval: 2000
   })
-
+console.log('test')
