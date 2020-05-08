@@ -4,7 +4,42 @@
 
 {% block body %}
 
-    {{ trick.name }}
-    {{ trick.description }}
-    {{ trick.videoLink }}
+    <!-- navbar -->
+    {{ block('navbar') }}
+
+    <!-- right sidebar -->
+    <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <ul class="masonry row gutter-2">
+              {% for trick in tricks %}
+              <li class="col-md-6 col-lg-4">
+                <article class="tile">
+                  <div class="tile-image" style="background-image: url({{ trick.name }})"></div>
+                  <a href="">
+                    <div class="tile-footer">
+                      <span class="eyebrow mb-1">{{ trick.name }}</span>
+                      <h3>{{ trick.description }}.</h3>
+                    </div>
+                  </a>
+                </article>
+              </li>
+              {% endfor %}
+            </ul>
+          </div> 
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <a href="" class="btn btn-outline-secondary text-black">Load More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- / right sidebar -->
+
+
+
+    <!-- footer -->
+    {{ block('footer') }}
 {% endblock %}

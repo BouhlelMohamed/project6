@@ -7,34 +7,10 @@
         <!-- cover -->
         {% include 'home/base/cover.html.twig' %}
 
-{#         <!-- Slider Snow -->
-	    <div class="main">
-            <div class="content-top">
-                <ul id="flexiselDemo3">
-                    <li><img src="images/board1.jpg" /></li>
-                    <li><img src="images/board2.jpg" /></li>
-                    <li><img src="images/board3.jpg" /></li>
-                    <li><img src="images/board4.jpg" /></li>
-                    <li><img src="images/board5.jpg" /></li>
-                </ul>
-            </div>
-	    </div> #}
 
         <!-- snow -->
         {% include 'home/base/snow.html.twig' %}
 
         <!-- footer -->
         {{ block('footer') }}
-
-	
-    {% for trick in tricks %}
-
-        {{ trick.id }}
-        {{ trick.name }}
-        {{ trick.description }}
-{#          <iframe width="420" height="315"
-            src={{ trick.videoLink }}>
-        </iframe>  #}
-<br>
-    {% endfor %}
 {% endblock %}
