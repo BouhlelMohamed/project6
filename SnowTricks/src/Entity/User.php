@@ -6,12 +6,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
+ * @UniqueEntity(
+ *     fields={"email", "username"},
+ *     message="L'adresse email ou l'username existe déja!"
+ * )
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -42,7 +47,7 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="8",minMessage="Votre mot de passe doit faire minimum 8 caractère")
+     * @Assert\Length(min="3",minMessage="Votre mot de passe doit faire minimum 8 caractère")
      * @Assert\EqualTo(propertyPath="confirm_password",message="Le mot de passe ne correspond pas")
      */
     private $password;
@@ -173,5 +178,16 @@ class User
         $this->picture = $picture;
 
         return $this;
+    }
+
+    public function getSalt()
+    {}
+
+    public function eraseCredentials()
+    {}
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
     }
 }

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <form action="{{ path('login') }}" method="post">
+            <input name="_username">
+            <input type="password" name="_password">
+            <button>submit</button>
+        </form>
+    </div>
+{% endblock %}

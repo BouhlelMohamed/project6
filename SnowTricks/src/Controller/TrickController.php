@@ -2,13 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Trick;
+use App\Entity\Comment;
 use App\Form\TricksType;
+use App\Form\CommentType;
+
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -38,16 +41,6 @@ class TrickController extends AbstractController
         {
             $trick = new Trick();
         }
-        // $form = $this->createFormBuilder($trick)
-        //             ->add('name', TextType::class, [
-        //                 'attr'  => [
-        //                     'rel'   => 1 ,
-        //                     'placeholder'   => 'le nom'
-        //                 ]
-        //             ])
-        //             ->add('description', TextareaType::class)
-        //             ->add('video_link', TextType::class)
-        //             ->getForm();
         $form = $this->createForm(TricksType::class,$trick);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
@@ -63,12 +56,24 @@ class TrickController extends AbstractController
     }
 
     /**
-    * @Route("/trick/{id}", name="trick_show",methods={"GET"})
+    * @Route("/trick/{id}", name="trick_show")
     */
-    public function show(Trick $trick)
+    public function show(Trick $trick,Request $request,EntityManagerInterface $em)
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class);
+        $form->handleRequest($request);
+
+        echo "dff";
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $comment->setTrick($trick);
+            $em->persist($comment);
+            $em->flush();
+        }
         return $this->render('trick/show.html.twig', [
-            'trick'     =>  $trick
+            'trick'     =>  $trick,
+            'commentForm'   =>  $form->createView()
         ]); 
     }
 

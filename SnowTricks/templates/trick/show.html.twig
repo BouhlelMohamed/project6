@@ -11,6 +11,12 @@
       {% for comment in trick.comments %}
         {{ comment.comment }}
       {% endfor %}
+      {% set userId = app.user.id %}
+      {{ form_start(commentForm) }}
+        {{ form_row(commentForm.comment, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+        {{ form_row(commentForm.user_id, {'attr': {'value':userId }} ) }}
+        <button>envoyer</button>
+      {{ form_end(commentForm) }}
       {% for image in trick.images %}
         {{ image.name }}
       {% endfor %}
