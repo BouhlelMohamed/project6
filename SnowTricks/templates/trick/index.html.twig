@@ -14,25 +14,22 @@
           <div class="col">
             <ul class="masonry row gutter-2">
               {% for trick in tricks %}
-              <li class="col-md-6 col-lg-4">
-                <article class="tile">
-                  <div class="tile-image" style="background-image: url({{ trick.name }})"></div>
-                  <a href="">
-                    <div class="tile-footer">
-                      <span class="eyebrow mb-1">{{ trick.name }}</span>
-                      <h3>{{ trick.description }}.</h3>
-                    </div>
-                  </a>
-                </article>
-              </li>
+					<li class="col-md-6 col-lg-4">
+						<article class="tile {% if loop.index is even %} tile-long {% endif %}">
+						{% for image in trick.images|slice(0,1) %}
+							<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
+						{% endfor %}
+							<a href="{{ path('trick_show', {'id': trick.id }) }}">
+								<div class="tile-footer">
+								<span class="eyebrow mb-1">{{ trick.name }}</span>
+								<h3>{{ trick.description|slice(0,24) }}...</h3>
+								</div>
+							</a>
+						</article>
+					</li>
               {% endfor %}
             </ul>
           </div> 
-        </div>
-        <div class="row">
-          <div class="col text-center">
-            <a href="" class="btn btn-outline-secondary text-black">Load More</a>
-          </div>
         </div>
       </div>
     </section>

@@ -60,7 +60,7 @@ class Comment
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(string $user)
     {
         $this->user = $user;
 

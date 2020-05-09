@@ -64,7 +64,6 @@ class TrickController extends AbstractController
         $form = $this->createForm(CommentType::class);
         $form->handleRequest($request);
 
-        echo "dff";
         if($form->isSubmitted() && $form->isValid())
         {
             $comment->setTrick($trick);

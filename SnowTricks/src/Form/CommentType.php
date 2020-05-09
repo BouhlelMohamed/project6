@@ -14,7 +14,7 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('comment')
-            ->add('user_id', HiddenType::class)
+            ->add('user')
         ;
     }
 
