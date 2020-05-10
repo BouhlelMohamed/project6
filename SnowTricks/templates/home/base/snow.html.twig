@@ -1,67 +1,38 @@
+
 		<!-- masonry -->
+		{% if app.user is not null %}
+			<div style="text-align: center;">
+				<a class="btn" style="background:#00b7ff;width:400px;color:white" href="{{ path('trick_create') }}">
+					Ajouter un Trick
+				</a>
+			</div>
+		{% endif %}
 		<section class="p-0 m-1">
 			<div class="container-full">
 				<ul class="masonry row gallery gutter-1 mb-0">
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal">
-						  <a href="../../assets/images/demo/minimal/portfolio-1.jpg" 
-						    style="background-image: url(images/tricks/corkscrew.jpg);">
-						    <span class="photo-caption">
-						      <span>corkscrew</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal equal-long">
-						  <a href="../../assets/images/demo/minimal/portfolio-2.jpg" 
-						    style="background-image: url(images/tricks/grabs_mute.png);">
-						    <span class="photo-caption">
-						      <span>mute</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal">
-						  <a href="../../assets/images/demo/minimal/portfolio-3.jpg" 
-						    style="background-image: url(images/tricks/half_pipe.jpg);">
-						    <span class="photo-caption">
-						      <span>half pipe</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal equal-long">
-						  <a href="../../assets/images/demo/minimal/portfolio-4.jpg" 
-						    style="background-image: url(images/tricks/indy_grabs.jpg);">
-						    <span class="photo-caption">
-						      <span>indy grabs</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal equal-long">
-						  <a href="images/tricks/japan.png" 
-						    style="background-image: url(images/tricks/japan.png);">
-						    <span class="photo-caption">
-						      <span>japan</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
-					<li class="col-6 col-md-4" data-aos="zoom-in">
-						<figure class="photo equal">
-						  <a href="images/tricks/nose.jpg"
-						    style="background-image: url(images/tricks/nose.jpg);">
-						    <span class="photo-caption">
-						      <span>nose</span>
-						    </span>
-						  </a>
-						</figure>
-					</li>
+					{% for trick in tricks|slice(0,6) %}
+						<li class="col-md-6 col-lg-4">
+							<article class="tile {% if loop.index is even %} tile-long {% endif %}">
+							{% if app.user is not null %}
+								<div class="icons-tricks">
+									<a href="{{ path('trick_edit', {'id': trick.id}) }}">
+										<i class="fas fa-pencil-alt pencil-edit-trick"></i>
+									</a>
+									<i class="fas fa-trash-alt  trash-trick"></i>
+								</div>
+							{% endif %}
+							{% for image in trick.images|slice(0,1) %}
+								<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
+							{% endfor %}
+								<a href="{{ path('trick_show', {'id': trick.id }) }}">
+									<div class="tile-footer">
+									<span class="eyebrow mb-1">{{ trick.name }}</span>
+									<h3>{{ trick.description|slice(0,24) }}...</h3>
+									</div>
+								</a>
+							</article>
+						</li>
+					{% endfor %}
 				</ul>
 				<div class="row" style="margin-top: 5px;">
 					<div class="col">

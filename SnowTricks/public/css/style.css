@@ -10,3 +10,20 @@ body
 {
 	max-height: 500px;
 }
+.icons-tricks
+{
+	padding: 10px;
+	z-index: 99;
+	text-align: right;
+}
+
+.pencil-edit-trick
+{
+	font-size: 25px;
+	color: #23c40c;
+}
+.trash-trick
+{
+	font-size: 25px;
+	color: #ff4343;
+}

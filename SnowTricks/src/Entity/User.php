@@ -48,14 +48,8 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Length(min="3",minMessage="Votre mot de passe doit faire minimum 8 caractère")
-     * @Assert\EqualTo(propertyPath="confirm_password",message="Le mot de passe ne correspond pas")
      */
     private $password;
-
-    /**
-     * @Assert\EqualTo(propertyPath="password",message="Le mot de passe ne correspond pas")
-     */
-    public $confirm_password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
