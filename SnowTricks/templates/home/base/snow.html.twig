@@ -18,7 +18,9 @@
 									<a href="{{ path('trick_edit', {'id': trick.id}) }}">
 										<i class="fas fa-pencil-alt pencil-edit-trick"></i>
 									</a>
-									<i class="fas fa-trash-alt  trash-trick"></i>
+									<a href="{{ path('trick_delete', {'id': trick.id}) }}">
+										<i class="fas fa-trash-alt  trash-trick"></i>
+									</a>
 								</div>
 							{% endif %}
 							{% for image in trick.images|slice(0,1) %}

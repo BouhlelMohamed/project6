@@ -76,4 +76,14 @@ class TrickController extends AbstractController
         ]); 
     }
 
+    /**
+    * @Route("/trick/delete/{id}", name="trick_delete")
+    */
+    public function delete(Trick $trick,EntityManagerInterface $em)
+    {
+        $em->remove($trick);
+        $em->flush();
+        return $this->redirectToRoute('allTricks');
+    }
+
 }

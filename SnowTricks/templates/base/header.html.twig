@@ -23,9 +23,15 @@
 
 		        <ul class="navbar-nav align-items-center mr-0">
 		          <li class="nav-item ">
-		            <a class="nav-link font-weight-bold grey__dark" href="{{ path('login') }}" id="navbarDropdown-2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		              Connexion
-		            </a>
+					{% if app.user is null %}
+						<a class="nav-link font-weight-bold grey__dark" href="{{ path('login') }}">
+							Connexion
+						</a>
+					{% else %}
+						<a class="nav-link font-weight-bold grey__dark" href="{{ path('logout') }}">
+							Déconnexion
+						</a>
+					{% endif %}
 		          </li>
 		        </ul>
 		      </div>
