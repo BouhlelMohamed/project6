@@ -33,9 +33,6 @@ class Comment
      */
     private $Trick;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
     private $createdAt;
 
     public function getId(): ?int
@@ -60,7 +57,7 @@ class Comment
         return $this->user;
     }
 
-    public function setUser(string $user)
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
@@ -84,10 +81,4 @@ class Comment
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
 }

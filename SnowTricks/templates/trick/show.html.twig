@@ -15,19 +15,19 @@
     <!-- navbar -->
     {{ block('navbar') }}
 
-{#       {{ trick.name }}
+       {{ trick.name }}
       {% for comment in trick.comments %}
         {{ comment.comment }}
       {% endfor %}
-      {{ form_start(commentForm) }}
-        {{ form_row(commentForm.comment, {'attr': {'placeholder':'Votre commentaire'}} ) }}
-        {{ form_row(commentForm.user, {'attr': {'value': app.user.id }} ) }}
-        <button>envoyer</button>
-      {{ form_end(commentForm) }}
+      {% if app.user is not null %}
+        {{ form_start(commentForm) }}
+          {{ form_row(commentForm.comment, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+          <button>envoyer</button>
+        {{ form_end(commentForm) }}
+      {% endif %}
       {% for image in trick.images %}
         {{ image.name }}
       {% endfor %}
-      {{ dump(trick )}} #}
           <!-- cover -->
     <section class="p-0">
       <div class="swiper-container text-white"

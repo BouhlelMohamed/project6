@@ -60,14 +60,18 @@ class TrickController extends AbstractController
     */
     public function show(Trick $trick,Request $request,EntityManagerInterface $em)
     {
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class);
-        $form->handleRequest($request);
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class,$comment);
+        $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+            $user = $this->getUser();
+            $comment->setUser($user);
             $comment->setTrick($trick);
             $em->persist($comment);
+            
             $em->flush();
         }
         return $this->render('trick/show.html.twig', [
