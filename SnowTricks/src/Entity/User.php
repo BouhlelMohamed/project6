@@ -57,9 +57,14 @@ class User implements UserInterface
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $picture;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
 
     public function __construct()
     {
@@ -187,5 +192,17 @@ class User implements UserInterface
     public function __toString() 
     {
         return (string) $this->id; 
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
     }
 }
