@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TrickController!{% endblock %}
+
+{% block body %}
+
+    <!-- navbar -->
+    {{ block('navbar') }}
+
+    <!-- right sidebar -->
+    <section>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <ul class="masonry row gutter-2">
+            {% for trick in tricks %}
+						<li class="col-md-6 col-lg-4">
+							<article class="tile {% if loop.index is even %} tile-long {% endif %}">
+							{% if app.user is not null %}
+								<div class="icons-tricks">
+									<a href="{{ path('trick_edit', {'id': trick.id}) }}">
+										<i class="fas fa-pencil-alt pencil-edit-trick"></i>
+									</a>
+									<a href="{{ path('trick_delete', {'id': trick.id}) }}">
+										<i class="fas fa-trash-alt  trash-trick"></i>
+									</a>
+								</div>
+							{% endif %}
+							{% for image in trick.images|slice(0,1) %}
+								<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
+							{% endfor %}
+								<a href="{{ path('trick_show', {'id': trick.id }) }}">
+									<div class="tile-footer">
+									<span class="eyebrow mb-1">{{ trick.name }}</span>
+									<h3>{{ trick.description|slice(0,24) }}...</h3>
+									</div>
+								</a>
+							</article>
+						</li>
+					{% endfor %}
+            </ul>
+          </div> 
+        </div>
+      </div>
+    </section>
+    <!-- / right sidebar -->
+
+
+
+    <!-- footer -->
+    {{ block('footer') }}
+{% endblock %}

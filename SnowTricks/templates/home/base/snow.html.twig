@@ -1,0 +1,48 @@
+
+		<!-- masonry -->
+		{% if app.user is not null %}
+			<div style="text-align: center;">
+				<a class="btn" style="background:#00b7ff;width:400px;color:white" href="{{ path('trick_create') }}">
+					Ajouter un Trick
+				</a>
+			</div>
+		{% endif %}
+		<section class="p-0 m-1">
+			<div class="container-full">
+				<ul class="masonry row gallery gutter-1 mb-0">
+					{% for trick in tricks|slice(0,6) %}
+						<li class="col-md-6 col-lg-4">
+							<article class="tile {% if loop.index is even %} tile-long {% endif %}">
+							{% if app.user is not null %}
+								<div class="icons-tricks">
+									<a href="{{ path('trick_edit', {'id': trick.id}) }}">
+										<i class="fas fa-pencil-alt pencil-edit-trick"></i>
+									</a>
+									<a href="{{ path('trick_delete', {'id': trick.id}) }}">
+										<i class="fas fa-trash-alt  trash-trick"></i>
+									</a>
+								</div>
+							{% endif %}
+							{% for image in trick.images|slice(0,1) %}
+								<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
+							{% endfor %}
+								<a href="{{ path('trick_show', {'id': trick.id }) }}">
+									<div class="tile-footer">
+									<span class="eyebrow mb-1">{{ trick.name }}</span>
+									<h3>{{ trick.description|slice(0,24) }}...</h3>
+									</div>
+								</a>
+							</article>
+						</li>
+					{% endfor %}
+				</ul>
+				<div class="row" style="margin-top: 5px;">
+					<div class="col">
+						<a href="{{ path('allTricks') }}" class="btn btn-block btn-light btn-lg text-center">
+							Voir plus
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- / masonry -->

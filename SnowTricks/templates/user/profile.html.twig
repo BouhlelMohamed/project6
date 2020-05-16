@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+        {% block stylesheets %}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>        
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>        
+            <link href="../css/style.css" rel='stylesheet' type='text/css' />
+            <script src="../js/script.js"></script>
+            <link rel="stylesheet" href="../template_assets/css/vendor.css" />
+            <link rel="stylesheet" href="../template_assets/css/style.css" />
+        {% endblock %}
+{% block body %}
+
+    {{ block('navbar')}}
+    {{ form_start(formUser) }}
+
+    <section class="p-0 bg-light">
+      <div class="image image-overlay image-cover" style="background-image:url(../../assets/images/demo/minimal/portfolio-bg-2.jpg)"
+      data-top-top="transform: translateY(0px);" 
+      data-top-bottom="transform: translateY(-250px);"></div>
+      <div class="container">
+        <div class="row justify-content-center align-items-end vh-50 mb-5">
+          <div class="col col-md-10 col-lg-8">
+            <div class="row align-items-center">
+              <div class="col-4 col-lg-3">
+                <img class="mr-3 avatar avatar-xl rounded" src="../../assets/images/demo/user-2.jpg" alt="Generic placeholder image">
+              </div>
+              <div class="col">
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <h2 class="mb-0"><b>{{ form_widget(formUser.username) }}</b></h2>
+                    <span class="text-muted"></span>
+                  </div>
+                  <div class="col-md-4 text-left text-md-right">
+                    <button type="button" class="btn btn-rounded btn-ico btn-white" data-toggle="tooltip" data-placement="top" title="Add Friend"><i class="icon-plus2 fs-20"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="bg-light p-0">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col col-md-10 col-lg-8">
+            <div class="nav nav-tabs mb-1">
+              <a class="nav-item nav-link active" data-toggle="tab" href="#demo-2-1">Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="bg-light pt-2">
+
+      <div class="container">
+        <div class="tab-content" id="demo-2">
+          <!-- tab settings -->
+          <div class="tab-pane show active" id="demo-2-4" role="tabpanel" aria-labelledby="demo-2-4">
+            <div class="row justify-content-center">
+              <div class="col-md-10 col-lg-8">
+
+                <div class="row">
+                  <div class="col">
+                    <h5 class="mb-2 fs-20 font-weight-normal">Vos informations</h5>
+                    <form>
+                      <div class="form-row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="firstName">Prénom</label>
+                                {{ form_widget(formUser.firstName) }}   
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="secondName">Nom</label>
+                                {{ form_widget(formUser.lastName) }}   
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="userMail">Email</label>
+                                {{ form_widget(formUser.email) }}   
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-row mt-1 align-items-center">
+                        <div class="col-3">
+                          <button class="btn btn-secondary">Enregistrer</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- / tab -->
+        {{ form_end(formUser) }}
+
+        </div>
+      </div>
+    </section>
+    {{ block('footer')}}
+
+{% endblock %}
+    {% block javascripts %}
+        <script src="../template_assets/js/vendor.js"></script>
+        <script src="../template_assets/js/app.js"></script>
+        <script type="text/javascript" src="../js/jquery.flexisel.js"></script>
+    {% endblock %}

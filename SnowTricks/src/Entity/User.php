@@ -10,10 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="users")
- * @UniqueEntity(
- *     fields={"email", "username"},
- *     message="L'adresse email ou l'username existe déja!"
- * )
  */
 class User
 {
