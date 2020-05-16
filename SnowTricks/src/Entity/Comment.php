@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
+ * @ORM\Entity(repositoryClass=CommentRepository::class)
  * @ORM\Table(name="comments")
  */
 class Comment
@@ -20,19 +21,21 @@ class Comment
     /**
      * @ORM\Column(type="text")
      */
-    private $comment;
+    private $text;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="comments")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
      */
-    private $Trick;
+    private $trick;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
     private $createdAt;
 
     public function getId(): ?int
@@ -40,14 +43,14 @@ class Comment
         return $this->id;
     }
 
-    public function getComment(): ?string
+    public function getText(): ?string
     {
-        return $this->comment;
+        return $this->text;
     }
 
-    public function setComment(string $comment): self
+    public function setText(string $text): self
     {
-        $this->comment = $comment;
+        $this->text = $text;
 
         return $this;
     }
@@ -66,12 +69,12 @@ class Comment
 
     public function getTrick(): ?Trick
     {
-        return $this->Trick;
+        return $this->trick;
     }
 
-    public function setTrick(?Trick $Trick): self
+    public function setTrick(?Trick $trick): self
     {
-        $this->Trick = $Trick;
+        $this->trick = $trick;
 
         return $this;
     }
@@ -81,4 +84,10 @@ class Comment
         return $this->createdAt;
     }
 
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
 }

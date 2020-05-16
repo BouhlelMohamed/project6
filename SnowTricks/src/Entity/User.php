@@ -2,21 +2,20 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="users")
  * @UniqueEntity(
  *     fields={"email", "username"},
  *     message="L'adresse email ou l'username existe déja!"
  * )
  */
-class User implements UserInterface
+class User
 {
     /**
      * @ORM\Id()
@@ -26,7 +25,7 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $username;
 
@@ -47,14 +46,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min="3",minMessage="Votre mot de passe doit faire minimum 8 caractère")
      */
     private $password;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user")
-     */
-    private $comments;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -65,6 +58,11 @@ class User implements UserInterface
      * @ORM\Column(type="boolean")
      */
     private $active;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
+     */
+    private $comments;
 
     public function __construct()
     {
@@ -81,7 +79,7 @@ class User implements UserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -136,6 +134,30 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    public function getActive(): ?string
+    {
+        return $this->active;
+    }
+
+    public function setActive(string $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Comment[]
      */
@@ -163,45 +185,6 @@ class User implements UserInterface
                 $comment->setUser(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    public function getSalt()
-    {}
-
-    public function eraseCredentials()
-    {}
-
-    public function getRoles()
-    {
-        return array('ROLE_USER');
-    }
-    public function __toString() 
-    {
-        return (string) $this->id; 
-    }
-
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
 
         return $this;
     }

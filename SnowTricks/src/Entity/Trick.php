@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Images;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
+use App\Repository\TrickRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
+ * @ORM\Entity(repositoryClass=TrickRepository::class)
  * @ORM\Table(name="tricks")
  */
 class Trick
@@ -31,29 +31,24 @@ class Trick
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="Trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
      */
     private $comments;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $video_link;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Images", mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Image::class, mappedBy="trick")
      */
     private $images;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $category;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Video::class, mappedBy="trick")
      */
     private $videos;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="trick")
+     */
+    private $category;
 
     public function __construct()
     {
@@ -122,27 +117,15 @@ class Trick
         return $this;
     }
 
-    public function getVideoLink(): ?string
-    {
-        return $this->video_link;
-    }
-
-    public function setVideoLink(?string $video_link): self
-    {
-        $this->video_link = $video_link;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Images[]
+     * @return Collection|Image[]
      */
     public function getImages(): Collection
     {
         return $this->images;
     }
 
-    public function addImage(Images $image): self
+    public function addImage(Image $image): self
     {
         if (!$this->images->contains($image)) {
             $this->images[] = $image;
@@ -152,7 +135,7 @@ class Trick
         return $this;
     }
 
-    public function removeImage(Images $image): self
+    public function removeImage(Image $image): self
     {
         if ($this->images->contains($image)) {
             $this->images->removeElement($image);
@@ -161,18 +144,6 @@ class Trick
                 $image->setTrick(null);
             }
         }
-
-        return $this;
-    }
-
-    public function getCategory(): ?string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
@@ -204,6 +175,18 @@ class Trick
                 $video->setTrick(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

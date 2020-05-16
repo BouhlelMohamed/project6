@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\VideoRepository;
+use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=VideoRepository::class)
- * @ORM\Table(name="videos")
+ * @ORM\Entity(repositoryClass=ImageRepository::class)
+ * @ORM\Table(name="images")
  */
-class Video
+class Image
 {
     /**
      * @ORM\Id()
@@ -21,10 +21,10 @@ class Video
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $link;
+    private $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="images")
      */
     private $trick;
 
@@ -33,14 +33,14 @@ class Video
         return $this->id;
     }
 
-    public function getLink(): ?string
+    public function getName(): ?string
     {
-        return $this->link;
+        return $this->name;
     }
 
-    public function setLink(string $link): self
+    public function setName(string $name): self
     {
-        $this->link = $link;
+        $this->name = $name;
 
         return $this;
     }
