@@ -27,3 +27,15 @@ body
 	font-size: 25px;
 	color: #ff4343;
 }
+.arrow-down
+{
+	position: absolute;
+	z-index: 999;
+	text-align: right;
+	width: -moz-available;
+}
+.arrow-down i
+{
+	color: grey;
+	font-size: 40px;
+}
