@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,8 +18,9 @@ class UserController extends AbstractController
     /**
     * @Route("/profile/{id}", name="profile")
     */
-    public function profile(User $user,Request $request,EntityManagerInterface $em,SluggerInterface $slugger)
+    public function profile(User $user,Request $request,EntityManagerInterface $em,SluggerInterface $slugger,UserRepository $repo)
     {
+        $userInfo = $repo->find($user);
         $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
@@ -50,7 +52,8 @@ class UserController extends AbstractController
             return $this->redirectToRoute('profile', ['id' => $user->getId()]);
         }
         return $this->render('user/profile.html.twig',[
-            'formUser'  =>  $form->createView()
+            'formUser'  =>  $form->createView(),
+            'user'      =>  $userInfo
         ]); 
     }
 }

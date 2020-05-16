@@ -43,6 +43,7 @@ class TrickController extends AbstractController
         }
         $form = $this->createForm(TrickType::class,$trick);
         $form->handleRequest($request);
+        dd($trick);
         if($form->isSubmitted() && $form->isValid())
         {
             $em->persist($trick);
