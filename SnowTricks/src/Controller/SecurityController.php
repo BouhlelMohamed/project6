@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
+
     /**
      * @Route("/login", name="login")
      */
@@ -21,13 +22,13 @@ class SecurityController extends AbstractController
         $user = new User();
 
         $form = $this->createForm(SecurityType::class,$user);
-        
         $form->handleRequest($request);
-
         if($form->isSubmitted() && $form->isValid())
         {
+            dump($user);
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
+            $user->setActive(0);
 
             $em->persist($user);
             $em->flush();
