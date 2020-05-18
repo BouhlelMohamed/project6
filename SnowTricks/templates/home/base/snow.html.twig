@@ -1,10 +1,15 @@
 
 		<!-- masonry -->
 		{% if app.user is not null %}
-			<div style="text-align: center;">
-				<a class="btn" style="background:#00b7ff;width:400px;color:white" href="{{ path('trick_create') }}">
-					Ajouter un Trick
-				</a>
+			<div class="btn-add-trick-and-btn-scroll-to-down">
+				<div class="div-for-btn-add-trick">
+					<a class="btn" style="background:#00b7ff;width:400px;color:white" href="{{ path('trick_create') }}">
+						Ajouter un Trick
+					</a>
+				</div>
+				<div class="arrow-down">
+					<i class="fas fa-arrow-circle-down down btn"></i>
+				</div>
 			</div>
 		{% endif %}
 		<section class="p-0 m-1">

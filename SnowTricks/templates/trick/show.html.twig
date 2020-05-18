@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TrickController!{% endblock %}
+{% block title %}{{ trick.name }}{% endblock %}
         {% block stylesheets %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>        
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -14,20 +14,6 @@
 
     <!-- navbar -->
     {{ block('navbar') }}
-
-       {{ trick.name }}
-      {% for comment in trick.comments %}
-        {{ comment.comment }}
-      {% endfor %}
-      {% if app.user is not null %}
-        {{ form_start(commentForm) }}
-          {{ form_row(commentForm.comment, {'attr': {'placeholder':'Votre commentaire'}} ) }}
-          <button>envoyer</button>
-        {{ form_end(commentForm) }}
-      {% endif %}
-      {% for image in trick.images %}
-        {{ image.name }}
-      {% endfor %}
           <!-- cover -->
     <section class="p-0">
       <div class="swiper-container text-white"
@@ -77,10 +63,9 @@
           <div class="col-md-12 col-lg-10 image-one-tick">
             <div class="owl-carousel owl-carousel-single" data-dots="true" data-nav="true" data-autoplay="true">
                {% for image in trick.images %}
-                
-              <figure class="photo">
-                <img src="../images/tricks/{{ image.name }}" alt="Image">
-              </figure>
+                  <figure class="photo">
+                    <img src="../images/tricks/{{ image.name }}" alt="Image">
+                  </figure>
                 {% endfor %}
             </div>
           </div>
@@ -88,10 +73,26 @@
       </div>
     </section>
 
+    <div class="container">
+        {% for comment in trick.comments %}
+            <div>
+				<div class="content-comment">
+					<img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
+					<div class="">{{ comment.user.username }}</div>
+					<div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
+				</div>
+              	<div class="">{{ comment.text }}</div>
+            </div>
+        {% endfor %}
 
+        {% if app.user is not null %}
+          {{ form_start(commentForm) }}
+            {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+            <button>envoyer</button>
+          {{ form_end(commentForm) }}
+        {% endif %}
 
-   
-
+    </div>
     <!-- footer -->
     {{ block('footer') }}
 {% endblock %}

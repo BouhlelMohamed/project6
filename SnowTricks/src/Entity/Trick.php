@@ -46,7 +46,7 @@ class Trick
     private $videos;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="trick")
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="trick", cascade={"persist"})
      */
     private $category;
 

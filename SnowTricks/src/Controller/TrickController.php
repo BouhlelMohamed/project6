@@ -2,18 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Trick;
+use App\Entity\Video;
 use App\Entity\Comment;
-use App\Form\TrickType;
 
+use App\Form\TrickType;
 use App\Form\CommentType;
 use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TrickController extends AbstractController
@@ -37,16 +35,22 @@ class TrickController extends AbstractController
     */
     public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em)
     {
-        if(!$trick)
-        {
-            $trick = new Trick();
-        }
+
+        $trick = new Trick();
+
+        $video = new Video();
+        $video->setLink('');
+        $trick->getVideos()->add($video);
+        $video2 = new Video();
+        $video2->setLink('');
+        $trick->getVideos()->add($video2);
         $form = $this->createForm(TrickType::class,$trick);
         $form->handleRequest($request);
-        dd($trick);
         if($form->isSubmitted() && $form->isValid())
         {
+            $video->setTrick($trick);
             $em->persist($trick);
+            //dd($trick);
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
@@ -61,7 +65,7 @@ class TrickController extends AbstractController
     */
     public function show(Trick $trick,Request $request,EntityManagerInterface $em)
     {
-
+        
         $comment = new Comment();
         $form = $this->createForm(CommentType::class,$comment);
         $form->handleRequest($request);
@@ -72,7 +76,6 @@ class TrickController extends AbstractController
             $comment->setUser($user);
             $comment->setTrick($trick);
             $em->persist($comment);
-            
             $em->flush();
         }
         return $this->render('trick/show.html.twig', [

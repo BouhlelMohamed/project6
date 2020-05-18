@@ -15,6 +15,7 @@ body
 	padding: 10px;
 	z-index: 99;
 	text-align: right;
+	height: 50px;
 }
 
 .pencil-edit-trick
@@ -29,10 +30,10 @@ body
 }
 .arrow-down
 {
-	position: absolute;
-	z-index: 999;
+	/* position: absolute;
+	z-index: 999; */
 	text-align: right;
-	width: -moz-available;
+	/* width: -moz-available; */
 }
 .arrow-down i
 {
@@ -42,4 +43,22 @@ body
 .custom-file
 {
 	display: none!important;
+}
+.btn-add-trick-and-btn-scroll-to-down
+{
+	display: grid;
+	grid-template-columns: 95% 1fr;
+}
+.div-for-btn-add-trick
+{
+	text-align: center;
+}
+.avatar-in-comment
+{
+	width:45px;
+}
+.content-comment
+{
+	display: grid;
+	grid-template-columns: 50px 72% 1fr;
 }

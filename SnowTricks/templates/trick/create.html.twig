@@ -11,6 +11,11 @@
     {{ form_start(formTrick) }}
     
             {{ form_widget(formTrick) }}
+    <ul class="videos">
+        {% for video in formTrick.videos %}
+        {% endfor %}
+        
+        </ul>
             <button class="btn btn-success">
                 {% if editMode %}
                     Modifier
