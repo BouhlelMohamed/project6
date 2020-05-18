@@ -1,29 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TrickController!{% endblock %}
+{% block title %}Crée un trick!{% endblock %}
 
 {% block body %}
 
     <!-- navbar -->
     {{ block('navbar') }}
     <div class="container">
-
-    {{ form_start(formTrick) }}
-    
-            {{ form_widget(formTrick) }}
-    <ul class="videos">
-        {% for video in formTrick.videos %}
-        {% endfor %}
-        
+        {{ form_start(formTrick) }}
+        {{ form_widget(formTrick) }}
+        <ul class="videos">
+            {% for video in formTrick.videos %}
+            {% endfor %}
         </ul>
-            <button class="btn btn-success">
-                {% if editMode %}
-                    Modifier
-                {% else %}
-                    Ajouter
-                    {% endif %}
-            </button>
-    {{ form_end(formTrick) }}
+        <button class="btn btn-success">
+            {% if editMode %}
+                Modifier
+            {% else %}
+                Ajouter
+                {% endif %}
+        </button>
+        {{ form_end(formTrick) }}
     </div>
     <!-- footer -->
     {{ block('footer') }}
