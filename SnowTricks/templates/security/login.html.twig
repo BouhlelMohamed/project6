@@ -25,20 +25,8 @@
                         <input type="password" name="_password" class="form-control" id="exampleFormControlInput2">
                       </div>
                       <button class="btn btn-primary btn-block">Se connecter</button>
+                      <a href="{{ path('register') }}">S'inscrire ?</a>
                     </form>
-                  </div>
-                </div>
-              </div>
-              <div class="accordion" data-accordion>
-                <div class="accordion-control" data-control>
-                  <h5>Create Account</h5>
-                </div>
-                <div class="accordion-content" data-content>
-                  <div class="accordion-content-wrapper">
-                        {{ form_start(formRegistration) }}
-                            {{ form_widget(formRegistration) }}
-                            <button class="btn btn-info btn-block">S'inscrire</button>
-                        {{ form_end(formRegistration) }}
                   </div>
                 </div>
               </div>

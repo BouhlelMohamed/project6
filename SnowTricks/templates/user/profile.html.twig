@@ -95,6 +95,14 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-row">
+                        <div class="col">
+                          <div class="form-group">
+                            <label for="userMail">Mot de passe</label>
+                                {{ form_widget(formUser.password, {'required': false}) }}
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-row mt-1 align-items-center">
                         <div class="col-3">
                           <button class="btn btn-secondary">Enregistrer</button>

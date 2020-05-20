@@ -2,34 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 
-class UserType extends AbstractType
+class ImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
-            ->add('password')
-            ->add('picture', FileType::class, [
-                'label' => 'Votre avatar',
-                'mapped' => false,
-                'required' => false
-            ])
-        ;
+        ->add('name', FileType::class, [
+            'mapped' => false,
+            'required' => false
+        ])
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => Image::class,
         ]);
     }
 }

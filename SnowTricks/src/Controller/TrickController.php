@@ -2,17 +2,24 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Trick;
 use App\Entity\Video;
-use App\Entity\Comment;
 
+use App\Entity\Comment;
+use App\Form\ImageType;
 use App\Form\TrickType;
+use App\Form\VideoType;
 use App\Form\CommentType;
+
 use App\Repository\TrickRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class TrickController extends AbstractController
 {
@@ -33,30 +40,65 @@ class TrickController extends AbstractController
     * @Route("/trick/create",name="trick_create")
     * @Route("/trick/edit/{id}", name="trick_edit")
     */
-    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em)
+    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em,SluggerInterface $slugger)
     {
+        if(!$trick)
+        {
+            $trick = new Trick();
+        }
 
-        $trick = new Trick();
+        $image = new Image();
+        $formImage = $this->createForm(ImageType::class,$image);
+        $formImage->handleRequest($request);
+        if($formImage->isSubmitted() && $formImage->isValid())
+        {
+            $imageName = $formImage->get('name')->getData();
+            if ($imageName) {
+                $nameFile = pathinfo($imageName->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($nameFile);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageName->guessExtension();
+
+                try {
+                    $imageName->move(
+                        $this->getParameter('directory_images_tricks'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    echo 'error';
+                }
+                $image->setName($newFilename);
+                $image->setTrick($trick);
+                dump($image);
+            }
+            $em->persist($image);
+            $em->flush();
+
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
 
         $video = new Video();
-        $video->setLink('');
-        $trick->getVideos()->add($video);
-        $video2 = new Video();
-        $video2->setLink('');
-        $trick->getVideos()->add($video2);
+        $formVideo = $this->createForm(VideoType::class,$video);
+        $formVideo->handleRequest($request);
+        if($formVideo->isSubmitted() && $formVideo->isValid())
+        {
+            $video->setTrick($trick);
+            $em->persist($video);
+            $em->flush();
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
         $form = $this->createForm(TrickType::class,$trick);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            $video->setTrick($trick);
             $em->persist($trick);
-            //dd($trick);
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
         return $this->render('trick/create.html.twig',[
-            'formTrick'  =>  $form->createView(),
-            'editMode'  =>  $trick->getId() !== null
+            'formTrick'          =>  $form->createView(),
+            'editMode'           =>  $trick->getId() !== null,
+            'formVideo'          =>  $formVideo->createView(),
+            'formImage'          =>  $formImage->createView()
         ]); 
     }
 

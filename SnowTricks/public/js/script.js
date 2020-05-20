@@ -21,4 +21,6 @@ $( document ).ready(function() {
         $('.custom-file-input').click();
     });
 
+    $('#user_password').val('');
+
 });

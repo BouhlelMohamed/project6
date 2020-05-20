@@ -8,21 +8,27 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
     /**
     * @Route("/profile/{id}", name="profile")
     */
-    public function profile(User $user,Request $request,EntityManagerInterface $em,SluggerInterface $slugger,UserRepository $repo)
+    public function profile(User $user,Request $request,EntityManagerInterface $em,
+    SluggerInterface $slugger,UserRepository $repo,UserPasswordEncoderInterface $encoder)
     {
         $userInfo = $repo->find($user);
         $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
+        if(strlen($user->getPassword()) != 60 || strlen($user->getPassword()) ==0)
+        {
+            $hash = $encoder->encodePassword($user,$user->getPassword());
+            $user->setPassword($hash);
+        }
         if($form->isSubmitted() && $form->isValid())
         {
             $picture = $form->get('picture')->getData();
@@ -31,21 +37,18 @@ class UserController extends AbstractController
                 $safeFilename = $slugger->slug($nameFile);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$picture->guessExtension();
     
-                // Move the file to the directory where brochures are stored
                 try {
                     $picture->move(
                         $this->getParameter('brochures_directory'),
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
                     echo 'error';
                 }
     
-                // updates the 'brochureFilename' property to store the PDF file name
-                // instead of its contents
                 $user->setPicture($newFilename);
             }
+
             $em->persist($user);
             $em->flush();
 

@@ -14,7 +14,15 @@ class SecurityController extends AbstractController
 {
 
     /**
-     * @Route("/login", name="login")
+    * @Route("/login", name="login")
+    */
+    public function login()
+    {
+        return $this->render('security/login.html.twig');
+    }
+
+    /**
+     * @Route("/register", name="register")
      */
     public function registration(Request $request, EntityManagerInterface $em,
     UserPasswordEncoderInterface $encoder)
@@ -25,7 +33,6 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            dump($user);
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
             $user->setActive(0);
@@ -35,7 +42,7 @@ class SecurityController extends AbstractController
 
             return $this->redirectToRoute('login');
         }
-            return $this->render('security/login.html.twig', [
+            return $this->render('security/register.html.twig', [
             'formRegistration' => $form->createView(),
         ]);
     }

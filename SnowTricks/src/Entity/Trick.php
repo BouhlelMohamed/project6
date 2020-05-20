@@ -31,7 +31,7 @@ class Trick
     private $description;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick")
+     * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="trick",cascade={"remove"})
      */
     private $comments;
 
@@ -49,6 +49,11 @@ class Trick
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="trick", cascade={"persist"})
      */
     private $category;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $bestImage;
 
     public function __construct()
     {
@@ -187,6 +192,18 @@ class Trick
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getBestImage(): ?string
+    {
+        return $this->bestImage;
+    }
+
+    public function setBestImage(string $bestImage): self
+    {
+        $this->bestImage = $bestImage;
 
         return $this;
     }

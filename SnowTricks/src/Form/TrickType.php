@@ -20,16 +20,11 @@ class TrickType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
+            ->add('bestImage')
             ->add('category',EntityType::class, [
                     'class' =>  Category::class,
                     'choice_label'  =>  'name'
-            ])
-            ->add('videos',CollectionType::class, [
-                'entry_type' => VideoType::class,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,]
-                )
-                ;
+                ]);
 
     }
 

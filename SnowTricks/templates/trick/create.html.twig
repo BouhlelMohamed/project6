@@ -9,19 +9,30 @@
     <div class="container">
         {{ form_start(formTrick) }}
         {{ form_widget(formTrick) }}
-        <ul class="videos">
-            {% for video in formTrick.videos %}
-            {% endfor %}
-        </ul>
         <button class="btn btn-success">
             {% if editMode %}
                 Modifier
             {% else %}
                 Ajouter
-                {% endif %}
+            {% endif %}
         </button>
         {{ form_end(formTrick) }}
     </div>
+            {% if editMode %}
+                {{ form_start(formVideo) }}
+                    <button class="btn btn-success">
+                        Ajouter une vidéo
+                    </button>
+                {{ form_end(formVideo) }}
+
+                {{ form_start(formImage) }}
+                    <button class="btn btn-success">
+                        Ajouter une image
+                    </button>
+                {{ form_end(formImage) }}
+            {% endif %}
+
+
     <!-- footer -->
     {{ block('footer') }}
 {% endblock %}
