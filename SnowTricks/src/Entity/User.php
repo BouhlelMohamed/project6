@@ -60,6 +60,9 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
      */
     private $comments;
+
+    
+    private $roles = [];
     
     public function __construct()
     {
@@ -192,9 +195,12 @@ class User implements UserInterface
     public function eraseCredentials()
     {}
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        return array('ROLE_USER');
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
 }

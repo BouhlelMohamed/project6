@@ -68,11 +68,9 @@
           <div class="tab-pane show active" id="demo-2-4" role="tabpanel" aria-labelledby="demo-2-4">
             <div class="row justify-content-center">
               <div class="col-md-10 col-lg-8">
-
                 <div class="row">
                   <div class="col">
                     <h5 class="mb-2 fs-20 font-weight-normal">Vos informations</h5>
-                    <form>
                       <div class="form-row">
                         <div class="col">
                           <div class="form-group">
@@ -95,27 +93,29 @@
                           </div>
                         </div>
                       </div>
+                      <div class="form-row mt-1 align-items-center">
+                        <div class="col-3">
+                          <button class="btn btn-secondary">Enregistrer</button>
+                          {{ form_end(formUser) }}
+                        </div>
+                      </div>
+                      {{ form_start(formUpdatePassword)}}
                       <div class="form-row">
                         <div class="col">
                           <div class="form-group">
                             <label for="userMail">Mot de passe</label>
-                                {{ form_widget(formUser.password, {'required': false}) }}
+                              {{ form_widget(formUpdatePassword.password, {'required': false, 'value': ''}) }}
                           </div>
                         </div>
                       </div>
-                      <div class="form-row mt-1 align-items-center">
-                        <div class="col-3">
-                          <button class="btn btn-secondary">Enregistrer</button>
-                        </div>
-                      </div>
-                    </form>
+                    <button class="btn btn-secondary">Changer votre mot de passe</button>
+                    {{ form_end(formUpdatePassword)}}
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <!-- / tab -->
-        {{ form_end(formUser) }}
 
         </div>
       </div>

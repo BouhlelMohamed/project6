@@ -19,6 +19,13 @@
 		              Tricks
 		            </a>
 		          </li>
+				  {% if app.user is not null %}
+					<li class="nav-item">
+						<a class="nav-link font-weight-bold grey__dark"  href="{{ path('profile', {'id': app.user.id}) }}" role="button">
+							Profile
+						</a>
+					</li>
+				  {% endif %}
 		        </ul>
 
 		        <ul class="navbar-nav align-items-center mr-0">
