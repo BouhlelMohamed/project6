@@ -1,1 +1,43 @@
-Votre compte a bien été validée 
+
+<div class="global-div-validate-account">
+    <div class="validate-account-class">
+        <div>   Votre compte a bien été validé </div>
+        <span>Dans quelques secondes vous allez être rediriger vers la page connexion </span>
+    <div>
+<div>
+
+
+
+<style>
+.global-div-validate-account {
+    width: 100%;
+    height: 100%;
+    display:flex ;
+    justify-content:center;
+    align-items:center;
+}
+.validate-account-class 
+{
+    border : 3px solid #00aa1b;
+    height:5em;
+    width:30em;
+    display:grid ;
+    justify-content:center;
+    align-items:center;
+}
+.validate-account-class div 
+{
+    color :#00aa1b ;
+    font-size : 25px;
+}
+.validate-account-class span 
+{
+    font-size : 12px;
+}
+</style>
+
+<script>
+    window.setTimeout( function(){
+        window.location = "/login";
+    }, 5000 );
+</script>

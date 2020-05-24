@@ -9,7 +9,6 @@ $( document ).ready(function() {
              scrollTop: $(".up").offset().top
          }, 1500);
      });
-    
     $(".up").click(function() {
         $('html, body').animate({
             scrollTop: $(".down").offset().top
