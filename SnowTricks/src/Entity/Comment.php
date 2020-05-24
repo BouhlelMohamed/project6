@@ -29,7 +29,7 @@ class Comment
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments")
+     * @ORM\ManyToOne(targetEntity=Trick::class, inversedBy="comments",cascade={"remove"})
      */
     private $trick;
 
