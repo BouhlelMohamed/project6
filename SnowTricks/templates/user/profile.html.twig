@@ -1,15 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello UserController!{% endblock %}
-        {% block stylesheets %}
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>        
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>        
-            <link href="../css/style.css" rel='stylesheet' type='text/css' />
-            <script src="../js/script.js"></script>
-            <link rel="stylesheet" href="../template_assets/css/vendor.css" />
-            <link rel="stylesheet" href="../template_assets/css/style.css" />
-        {% endblock %}
 {% block body %}
 
     {{ block('navbar')}}
@@ -33,7 +24,7 @@
                     <span class="text-muted"></span>
                   </div>
                   <div class="col-md-4 text-left text-md-right">
-                    <button type="button" class="btn btn-rounded btn-ico btn-white" data-toggle="tooltip" data-placement="top" title="Add Friend">
+                    <button type="button" class="btn btn-rounded btn-ico btn-white" data-toggle="tooltip" data-placement="top" title="Ajouter une image">
                         <i class="icon-plus2 fs-20 icon-add-avatar"></i>
                         {{ form_widget(formUser.picture) }}
                     </button>
@@ -108,7 +99,7 @@
                           </div>
                         </div>
                       </div>
-                    <button class="btn btn-secondary">Changer votre mot de passe</button>
+                    <button class="btn btn-secondary btn-update-password">Changer votre mot de passe</button>
                     {{ form_end(formUpdatePassword)}}
                   </div>
                 </div>
@@ -123,8 +114,3 @@
     {{ block('footer')}}
 
 {% endblock %}
-    {% block javascripts %}
-        <script src="../template_assets/js/vendor.js"></script>
-        <script src="../template_assets/js/app.js"></script>
-        <script type="text/javascript" src="../js/jquery.flexisel.js"></script>
-    {% endblock %}

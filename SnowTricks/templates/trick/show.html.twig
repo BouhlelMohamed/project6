@@ -1,15 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ trick.name }}{% endblock %}
-        {% block stylesheets %}
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>        
-            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>        
-            <link href="../css/style.css" rel='stylesheet' type='text/css' />
-            <script src="../js/script.js"></script>
-            <link rel="stylesheet" href="../template_assets/css/vendor.css" />
-            <link rel="stylesheet" href="../template_assets/css/style.css" />
-        {% endblock %}
+
 {% block body %}
 
     <!-- navbar -->
@@ -49,18 +41,23 @@
     <section>
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-md-10 col-lg-8">
-            <p class="lead">{{ trick.name }}</p>
+          <div class="col-md-10 col-lg-10">
+            <p class="lead">{{ trick.name }}
+                       {% for category in trick.category %}
+                            <p class="lead">{{ category.name }}</p>
+                        {% endfor %}
+            </p>
+             
             <hr class="w-25">
           </div>
         </div>
         <div class="row justify-content-center">
-          <div class="col-md-10 col-lg-8">
+          <div class="col-md-10 col-lg-10">
             <p>{{ trick.description }}</p>
           </div>
         </div>
         <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-10 image-one-tick">
+          <div class="col-md-10 col-lg-10 image-one-tick">
             <div class="owl-carousel owl-carousel-single" data-dots="true" data-nav="true" data-autoplay="true">
                {% for image in trick.images %}
                   <figure class="photo">
@@ -72,32 +69,47 @@
         </div>
       </div>
     </section>
+        <br><br><br>        <br><br><br>
 
-    <div class="container">
-        {% for comment in trick.comments %}
-            <div>
-				<div class="content-comment">
-					<img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
-					<div class="">{{ comment.user.username }}</div>
-					<div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
-				</div>
-              	<div class="">{{ comment.text }}</div>
+        <div class="row justify-content-center">
+          <div class="col-md-10 col-lg-10 image-one-tick">
+            {% for video in trick.videos %}
+              <iframe width="450" height="300" 
+                src="{{ video.link}}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; 
+                encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            {% endfor %}
+          </div>
+        </div>
+        <br><br><br>
+        <br><br><br>
+
+    <div class="container container-comment">
+      <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-10">
+            {% for comment in trick.comments %}
+                <div>
+            <div class="content-comment">
+              <img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
+              <div class="">{{ comment.user.username }}</div>
+              <div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
             </div>
-        {% endfor %}
+                    <div class="">{{ comment.text }}</div>
+                </div>
+            {% endfor %}
 
-        {% if app.user is not null %}
-          {{ form_start(commentForm) }}
-            {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
-            <button>envoyer</button>
-          {{ form_end(commentForm) }}
-        {% endif %}
-
+            {% if app.user is not null %}
+              {{ form_start(commentForm) }}
+                {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+                <button class="btn btn-info">Envoyer</button>
+              {{ form_end(commentForm) }}
+            {% endif %}
+        </div>
+      </div>
     </div>
     <!-- footer -->
     {{ block('footer') }}
 {% endblock %}
-    {% block javascripts %}
-        <script src="../template_assets/js/vendor.js"></script>
-        <script src="../template_assets/js/app.js"></script>
-        <script type="text/javascript" src="../js/jquery.flexisel.js"></script>
-    {% endblock %}
