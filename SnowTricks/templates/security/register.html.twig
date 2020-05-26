@@ -11,14 +11,25 @@
             <div class="accordion-group accordion-group-portal" data-accordion-group>
               <div class="accordion" data-accordion>
                 <div class="accordion-control" data-control>
-                  <h5>Create Account</h5>
+                  <h5>Créer votre compte</h5>
                 </div>
                 <div class="accordion-content" data-content>
                   <div class="accordion-content-wrapper">
-                        {{ form_start(formRegistration) }}
-                            {{ form_widget(formRegistration) }}
-                            <button class="btn btn-info btn-block">S'inscrire</button>
-                        {{ form_end(formRegistration) }}
+                    {{ form_start(formRegistration) }}
+                      <div class="form-group">
+                        <label> Mot de passe </label>
+                        {{ form_widget(formRegistration.username) }}
+                      </div>
+                      <div class="form-group">
+                        <label> Mot de passe </label>
+                        {{ form_widget(formRegistration.email) }}
+                      </div>
+                      <div class="form-group">
+                        <label> Mot de passe </label>
+                        {{ form_widget(formRegistration.password) }}
+                      </div>
+                        <button class="btn btn-info btn-block">S'inscrire</button>
+                    {{ form_end(formRegistration) }}
                   </div>
                 </div>
               </div>

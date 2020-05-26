@@ -101,3 +101,9 @@ body
 {
 	margin-top: 50px;
 }
+.reset-and-register
+{
+	margin-top: 15px;
+	display: grid;
+	grid-template-columns:  1fr 1fr;
+}

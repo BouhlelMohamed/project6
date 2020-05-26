@@ -9,6 +9,7 @@ use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TrickType extends AbstractType
@@ -17,7 +18,7 @@ class TrickType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('description')
+            ->add('description',TextareaType::class)
             ->add('bestImage')
             ->add('category',EntityType::class, [
                     'class' =>  Category::class,

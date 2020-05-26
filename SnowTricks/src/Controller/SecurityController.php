@@ -3,13 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Token;
+use App\Form\ForgetType;
 use App\Form\SecurityType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Notifier\NotifierInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Notifier\Recipient\AdminRecipient;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -86,7 +87,6 @@ class SecurityController extends AbstractController
         return $this->render('security/validate.html.twig');
     }
 
-
     // crypter un lien 
     function getCrypteText($texte, $cle) 
     {
@@ -130,6 +130,46 @@ class SecurityController extends AbstractController
             $compteur++;
         }
         return $variabletemp;
+    }
+
+    /**
+     * @Route("/forget-password", name="forgetPassword")
+     */
+    public function forgetPassword(Request $request,EntityManagerInterface $em,UserRepository $repo)
+    {
+        $form = $this->createForm(ForgetType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            foreach($form->getData() as $value)
+            {
+                $email = $repo->findOneBy(array('email' => $value));
+                if($email != null)
+                {
+                    $user = new User();
+                    $token = new Token();
+                    $token->setUser($user);
+                    $em->persist($token);
+                    $em->flush();
+                }else {
+                    echo "notification pas trouvé email";
+                }
+            }
+
+
+        }
+
+        return $this->render('security/forgetPassword.html.twig',[
+        'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/reset-password", name="resetPassword")
+     */
+    public function resetPassword()
+    {
+        
     }
 
     /**
