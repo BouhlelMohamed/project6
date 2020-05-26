@@ -2,17 +2,21 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\User;
 use App\Entity\Token;
 use App\Form\ForgetType;
 use App\Form\SecurityType;
+use App\Form\UpdatePasswordType;
 use App\Repository\UserRepository;
+use App\Repository\TokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\AdminRecipient;
 use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -72,13 +76,13 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/validate/{id}", name="validate")
+     * @Route("/validate/{token}", name="validate")
      */
     public function validateAccount(Request $request,EntityManagerInterface $em,
     UserRepository $repo)
     {
         $routeParameters = $request->attributes->get('_route_params');
-        $decrypteId = $this->getDecrypteText($routeParameters['id'],'id_validate_acoount');
+        $decrypteId = $this->getDecrypteText($routeParameters['token'],'id_validate_acoount');
         $user = $repo->findOneBy(array('id' => $decrypteId));
         $user->setActive(true);
         $em->persist($user);
@@ -135,7 +139,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("/forget-password", name="forgetPassword")
      */
-    public function forgetPassword(Request $request,EntityManagerInterface $em,UserRepository $repo)
+    public function forgetPassword(Request $request,EntityManagerInterface $em,
+    UserRepository $repo,NotifierInterface $notifier)
     {
         $form = $this->createForm(ForgetType::class);
         $form->handleRequest($request);
@@ -143,33 +148,75 @@ class SecurityController extends AbstractController
         {
             foreach($form->getData() as $value)
             {
-                $email = $repo->findOneBy(array('email' => $value));
-                if($email != null)
+                $userInfo = $repo->findOneBy(array('email' => $value));
+                if($userInfo != null)
                 {
-                    $user = new User();
                     $token = new Token();
-                    $token->setUser($user);
+                    $cryptId = $this->getCrypteText($userInfo->getId(),'id_reset_password');
+                    $token->setUser($userInfo);
+                    $token->setCreatedAt(new DateTime('NOW'));
+                    $token->setExpireAt(new DateTime('tomorrow'));
+                    $token->setToken($cryptId);
                     $em->persist($token);
                     $em->flush();
+
+                    // Create a Notification that has to be sent
+                    // using the "email" channel
+                    $notification = (new Notification('Nouveau mot de passe', ['email']))
+                    ->content('Bonjour, voici le lien pour changer votre mot de passe.  
+                    http://localhost:8000/reset-password/'.$cryptId . "
+                     Attention le lien expire dans 24H!!");
+
+                    // The receiver of the Notification
+                    $recipient = new AdminRecipient(
+                        $userInfo->getEmail(),
+                    );
+
+                    // Send the notification to the recipient
+                    $notifier->send($notification, $recipient);
+
                 }else {
-                    echo "notification pas trouvé email";
+                    echo "notification  email pas trouvé ";
                 }
             }
-
-
         }
-
         return $this->render('security/forgetPassword.html.twig',[
         'form' => $form->createView()
         ]);
     }
     
     /**
-     * @Route("/reset-password", name="resetPassword")
+     * @Route("/reset-password/{token}", name="resetPassword")
      */
-    public function resetPassword()
+    public function resetPassword(Request $request,UserRepository $repo,
+    EntityManagerInterface $em,UserPasswordEncoderInterface $encoder,TokenRepository $repoToken)
     {
-        
+        $token = $request->attributes->get('token');
+        $decrypteId = $this->getDecrypteText($token,'id_reset_password');
+        $user = $repo->findOneBy(array('id' => $decrypteId));
+        $token = $repoToken->findOneBy(array('user' => $decrypteId));
+        if($token->getExpireAt() > new DateTime("Now"))
+        {
+            $tokenOnOff = 0;
+        }
+        else {
+            $tokenOnOff = 1;
+        }
+        $form = $this->createForm(UpdatePasswordType::class,$user);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+                $hash = $encoder->encodePassword($user,$user->getPassword());
+                $user->setPassword($hash);
+                $em->persist($user);
+                $em->flush();
+                return $this->redirectToRoute('login');
+        }
+        return $this->render('security/resetPassword.html.twig',[
+            'form' => $form->createView(),
+            'tokenOnOff'=>  $tokenOnOff
+        ]);
     }
 
     /**
