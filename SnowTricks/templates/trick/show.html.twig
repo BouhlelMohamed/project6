@@ -6,13 +6,25 @@
 
     <!-- navbar -->
     {{ block('navbar') }}
-          <!-- cover -->
+    <!-- cover -->
     <section class="p-0">
       <div class="swiper-container text-white"
         data-top-top="transform: translateY(0px);" 
         data-top-bottom="transform: translateY(250px);">
         <div class="swiper-wrapper">
           <div class="swiper-slide vh-100">
+            <div class="div-block-alert">
+              {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                  {{ message }}
+                </div>
+              {% endfor %}
+			  {% for message in app.flashes('update') %}
+                <div class="alert alert-success">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
             <div class="image image-overlay image-zoom" style="background-image: url(../images/tricks/{{ trick.bestImage }})"></div>
             <div class="caption">
               <div class="container">
@@ -42,10 +54,11 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-10 col-lg-10">
-            <p class="lead">{{ trick.name }}
-                       {% for category in trick.category %}
-                            <p class="lead">{{ category.name }}</p>
-                        {% endfor %}
+            <p class="lead">
+              {{ trick.name }}
+              {% for category in trick.category %}
+                <p class="lead">{{ category.name }}</p>
+              {% endfor %}
             </p>
              
             <hr class="w-25">

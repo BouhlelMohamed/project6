@@ -9,13 +9,20 @@
 
     <!-- right sidebar -->
     <section>
+	<div class="div-block-alert">
+	{% for message in app.flashes('danger') %}
+		<div class="alert alert-danger">
+			{{ message }}
+		</div>
+	{% endfor %}
+	</div>
       <div class="container-fluid">
         <div class="row">
           <div class="col">
             <ul class="masonry row gutter-2">
-            {% for trick in tricks %}
-						<li class="col-md-6 col-lg-4">
-							<article class="tile {% if loop.index is even %} tile-long {% endif %}">
+				{% for trick in tricks %}
+					<li class="col-md-6 col-lg-4">
+						<article class="tile {% if loop.index is even %} tile-long {% endif %}">
 							{% if app.user is not null %}
 								<div class="icons-tricks">
 									<a href="{{ path('trick_edit', {'id': trick.id}) }}">
@@ -29,15 +36,15 @@
 							{% for image in trick.images|slice(0,1) %}
 								<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
 							{% endfor %}
-								<a href="{{ path('trick_show', {'id': trick.id }) }}">
-									<div class="tile-footer">
+							<a href="{{ path('trick_show', {'id': trick.id }) }}">
+								<div class="tile-footer">
 									<span class="eyebrow mb-1">{{ trick.name }}</span>
 									<h3>{{ trick.description|slice(0,24) }}...</h3>
-									</div>
-								</a>
-							</article>
-						</li>
-					{% endfor %}
+								</div>
+							</a>	
+						</article>
+					</li>
+				{% endfor %}
             </ul>
           </div> 
         </div>

@@ -1,6 +1,5 @@
 {% extends 'base.html.twig' %}
 
-
 {% block title %}
     {% if editMode %}
         Modifier un trick!
@@ -33,31 +32,31 @@
                 <div class="row align-items-center">
                   <div class="col-md-12">
                     {% if editMode %}
-                    {{ form_start(formVideo) }}
-                        {{form_widget(formVideo) }}
-                        <button class="btn btn-info">
-                            Ajouter une vidéo
-                        </button>
-                    {{ form_end(formVideo) }}
+                      {{ form_start(formVideo) }}
+                          {{form_widget(formVideo) }}
+                          <button class="btn btn-info">
+                              Ajouter une vidéo
+                          </button>
+                      {{ form_end(formVideo) }}
 
-                    {{ form_start(formImage) }}
-                    <span class="image-trick-edit">
-                    {{form_widget(formImage) }}
-                    </span>
+                      {{ form_start(formImage) }}
+                        <span class="image-trick-edit">
+                          {{form_widget(formImage) }}
+                        </span>
                         <button class="btn btn-info">
-                            Ajouter une image
+                          Ajouter une image
                         </button>
-                    {{ form_end(formImage) }}
+                      {{ form_end(formImage) }}
                     {% endif %}
                     {{ form_start(formTrick) }}
                     {{ form_widget(formTrick) }}
-                    <button class="btn btn-info">
+                      <button class="btn btn-info">
                         {% if editMode %}
                             Modifier
                         {% else %}
                             Ajouter
                         {% endif %}
-                    </button>
+                      </button>
                     {{ form_end(formTrick) }}
                   </div>
                 </div>
@@ -67,9 +66,6 @@
         </div>
       </div>
     </section>
-
-
-
 
     <!-- footer -->
     {{ block('footer') }}

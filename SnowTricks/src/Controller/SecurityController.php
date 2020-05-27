@@ -44,6 +44,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            dd($form->getData());
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
             $user->setActive(false);
@@ -142,42 +143,43 @@ class SecurityController extends AbstractController
     public function forgetPassword(Request $request,EntityManagerInterface $em,
     UserRepository $repo,NotifierInterface $notifier)
     {
-        $form = $this->createForm(ForgetType::class);
+        //$user = new User();
+        $form = $this->createForm(ForgetType::class,/*$user*/);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            foreach($form->getData() as $value)
+            //dd($form->getData());
+            $formResult = $form->getData();
+            $value = $formResult['email'];
+            $userInfo = $repo->findOneBy(array('email' => $value));
+            if($userInfo != null)
             {
-                $userInfo = $repo->findOneBy(array('email' => $value));
-                if($userInfo != null)
-                {
-                    $token = new Token();
-                    $cryptId = $this->getCrypteText($userInfo->getId(),'id_reset_password');
-                    $token->setUser($userInfo);
-                    $token->setCreatedAt(new DateTime('NOW'));
-                    $token->setExpireAt(new DateTime('tomorrow'));
-                    $token->setToken($cryptId);
-                    $em->persist($token);
-                    $em->flush();
+                $token = new Token();
+                $cryptId = $this->getCrypteText($userInfo->getId(),'id_reset_password');
+                $token->setUser($userInfo);
+                $token->setCreatedAt(new DateTime('NOW'));
+                $token->setExpireAt(new DateTime('tomorrow'));
+                $token->setToken($cryptId);
+                $em->persist($token);
+                $em->flush();
 
-                    // Create a Notification that has to be sent
-                    // using the "email" channel
-                    $notification = (new Notification('Nouveau mot de passe', ['email']))
-                    ->content('Bonjour, voici le lien pour changer votre mot de passe.  
-                    http://localhost:8000/reset-password/'.$cryptId . "
-                     Attention le lien expire dans 24H!!");
+                // Create a Notification that has to be sent
+                // using the "email" channel
+                $notification = (new Notification('Nouveau mot de passe', ['email']))
+                ->content('Bonjour, voici le lien pour changer votre mot de passe.  
+                http://localhost:8000/reset-password/'.$cryptId . "
+                    Attention le lien expire dans 24H!!");
 
-                    // The receiver of the Notification
-                    $recipient = new AdminRecipient(
-                        $userInfo->getEmail(),
-                    );
+                // The receiver of the Notification
+                $recipient = new AdminRecipient(
+                    $userInfo->getEmail(),
+                );
 
-                    // Send the notification to the recipient
-                    $notifier->send($notification, $recipient);
+                // Send the notification to the recipient
+                $notifier->send($notification, $recipient);
 
-                }else {
-                    echo "notification  email pas trouvé ";
-                }
+            }else {
+                echo "notification  email pas trouvé ";
             }
         }
         return $this->render('security/forgetPassword.html.twig',[
@@ -206,12 +208,11 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-
-                $hash = $encoder->encodePassword($user,$user->getPassword());
-                $user->setPassword($hash);
-                $em->persist($user);
-                $em->flush();
-                return $this->redirectToRoute('login');
+            $hash = $encoder->encodePassword($user,$user->getPassword());
+            $user->setPassword($hash);
+            $em->persist($user);
+            $em->flush();
+            return $this->redirectToRoute('login');
         }
         return $this->render('security/resetPassword.html.twig',[
             'form' => $form->createView(),

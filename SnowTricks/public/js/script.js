@@ -22,4 +22,7 @@ $( document ).ready(function() {
 
     $('#user_password').val('');
 
+    setTimeout(function() { 
+        $('.alert').css('display','none');
+    }, 3500);
 });

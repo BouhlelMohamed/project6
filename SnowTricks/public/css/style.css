@@ -107,3 +107,14 @@ body
 	display: grid;
 	grid-template-columns:  1fr 1fr;
 }
+.alert{
+	z-index: 99;
+	top: 83px;
+	margin-right: 10px;
+	
+}
+.div-block-alert{
+	float: right;
+	position: absolute;
+    left: 1200px;
+}

@@ -46,7 +46,6 @@ class TrickController extends AbstractController
         {
             $trick = new Trick();
         }
-
         $image = new Image();
         $formImage = $this->createForm(ImageType::class,$image);
         $formImage->handleRequest($request);
@@ -68,7 +67,7 @@ class TrickController extends AbstractController
                 }
                 $image->setName($newFilename);
                 $image->setTrick($trick);
-                dump($image);
+                //dump($image);
             }
             $em->persist($image);
             $em->flush();
@@ -90,6 +89,12 @@ class TrickController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            if(strpos($request->server->get('HTTP_REFERER'),'edit'))
+            {
+                $this->addFlash('update', 'Le trick a bien été modifié !');
+            }else {
+                $this->addFlash('success', 'Le trick a bien été créé !');
+            }
             $em->persist($trick);
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
@@ -133,6 +138,7 @@ class TrickController extends AbstractController
     {
         $em->remove($trick);
         $em->flush();
+        $this->addFlash('danger', 'Le trick a bien été supprimé !');
         return $this->redirectToRoute('allTricks');
     }
 
