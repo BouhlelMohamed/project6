@@ -5,7 +5,13 @@
 {% block body %}
 
     {{ block('navbar')}}
-
+    <div class="div-block-alert">
+      {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
     {{ form_start(formUser) }}
     <section class="p-0 bg-light">
       <div class="image image-overlay image-cover" style="background-image:url(../images/slider/293266.jpg)"

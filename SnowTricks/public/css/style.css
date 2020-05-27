@@ -118,3 +118,10 @@ body
 	position: absolute;
     left: 1200px;
 }
+.navigation
+{
+	display:grid;
+	justify-content: center;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

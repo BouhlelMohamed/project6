@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
-            dd($form->getData());
+            //dd($form->getData());
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
             $user->setActive(false);
@@ -67,10 +67,11 @@ class SecurityController extends AbstractController
             // Send the notification to the recipient
             $notifier->send($notification, $recipient);
 
+            $this->addFlash('success', 'Vous êtes bien inscrit, 
+            Un email de validation vient de vous être envoyé !');
+
             return $this->redirectToRoute('login');
-
         }
-
             return $this->render('security/register.html.twig', [
             'formRegistration' => $form->createView(),
         ]);
@@ -178,6 +179,10 @@ class SecurityController extends AbstractController
                 // Send the notification to the recipient
                 $notifier->send($notification, $recipient);
 
+                $this->addFlash('success', 'Un email vient de vous être envoyé !');
+
+                return $this->redirectToRoute('login');
+
             }else {
                 echo "notification  email pas trouvé ";
             }
@@ -212,6 +217,9 @@ class SecurityController extends AbstractController
             $user->setPassword($hash);
             $em->persist($user);
             $em->flush();
+
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
+
             return $this->redirectToRoute('login');
         }
         return $this->render('security/resetPassword.html.twig',[

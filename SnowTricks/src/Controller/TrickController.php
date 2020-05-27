@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Image;
 use App\Entity\Trick;
-use App\Entity\Video;
 
+use App\Entity\Video;
 use App\Entity\Comment;
 use App\Form\ImageType;
 use App\Form\TrickType;
 use App\Form\VideoType;
 use App\Form\CommentType;
-
 use App\Repository\TrickRepository;
 
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -110,9 +112,11 @@ class TrickController extends AbstractController
     /**
     * @Route("/trick/{id}", name="trick_show")
     */
-    public function show(Trick $trick,Request $request,EntityManagerInterface $em)
+    public function show(Trick $trick,Request $request,EntityManagerInterface $em,
+    PaginatorInterface $paginator,CommentRepository $repo)
     {
-        
+        $commentQuery = $repo->createQueryBuilder('c')->orderBy('c.createdAt','DESC')->getQuery();
+        $pagination = $paginator->paginate($commentQuery,$request->query->getInt('p', 1),10);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class,$comment);
         $form->handleRequest($request);
@@ -122,12 +126,14 @@ class TrickController extends AbstractController
             $user = $this->getUser();
             $comment->setUser($user);
             $comment->setTrick($trick);
+            $comment->setCreatedAt(new DateTime('NOW'));
             $em->persist($comment);
             $em->flush();
         }
         return $this->render('trick/show.html.twig', [
-            'trick'     =>  $trick,
-            'commentForm'   =>  $form->createView()
+            'trick'        =>  $trick,
+            'commentForm'  =>  $form->createView(),
+            'pagination'   => $pagination
         ]); 
     }
 

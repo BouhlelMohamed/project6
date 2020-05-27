@@ -19,7 +19,7 @@
                   {{ message }}
                 </div>
               {% endfor %}
-			  {% for message in app.flashes('update') %}
+			        {% for message in app.flashes('update') %}
                 <div class="alert alert-success">
                   {{ message }}
                 </div>
@@ -103,17 +103,24 @@
     <div class="container container-comment">
       <div class="row justify-content-center">
         <div class="col-md-10 col-lg-10">
-            {% for comment in trick.comments %}
-                <div>
-            <div class="content-comment">
-              <img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
-              <div class="">{{ comment.user.username }}</div>
-              <div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
-            </div>
-                    <div class="">{{ comment.text }}</div>
-                </div>
-            {% endfor %}
 
+            <h1>Commentaires ({{ pagination.getTotalItemCount }})</h1>
+
+            {% for comment in pagination %}
+              <div>
+                  <div class="content-comment">
+                  <img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
+                  <div class="">{{ comment.user.username }}</div>
+                  <div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
+              </div>
+              <div class="">{{ comment.text }}</div>
+              </div>
+            {% endfor %}
+        
+          <div class="navigation">
+              {{ knp_pagination_render(pagination) }}
+          </div>    
+                  
             {% if app.user is not null %}
               {{ form_start(commentForm) }}
                 {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}

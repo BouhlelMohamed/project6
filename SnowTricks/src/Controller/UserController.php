@@ -32,6 +32,7 @@ class UserController extends AbstractController
             $user->setPassword($hash);
             $em->persist($user);
             $em->flush();
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
 
             return $this->redirectToRoute('profile', ['id' => $user->getId()]);
         }
@@ -63,6 +64,7 @@ class UserController extends AbstractController
 
             $em->persist($user);
             $em->flush();
+            $this->addFlash('success', 'Votre profile a bien été modifié !');
 
             return $this->redirectToRoute('profile', ['id' => $user->getId()]);
         }
