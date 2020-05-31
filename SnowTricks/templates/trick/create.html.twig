@@ -31,23 +31,6 @@
               <div class="col">
                 <div class="row align-items-center">
                   <div class="col-md-12">
-                    {% if editMode %}
-                      {{ form_start(formVideo) }}
-                          {{form_widget(formVideo) }}
-                          <button class="btn btn-info">
-                              Ajouter une vidéo
-                          </button>
-                      {{ form_end(formVideo) }}
-
-                      {{ form_start(formImage) }}
-                        <span class="image-trick-edit">
-                          {{form_widget(formImage) }}
-                        </span>
-                        <button class="btn btn-info">
-                          Ajouter une image
-                        </button>
-                      {{ form_end(formImage) }}
-                    {% endif %}
                     {{ form_start(formTrick) }}
                     {{ form_widget(formTrick) }}
                       <button class="btn btn-info">

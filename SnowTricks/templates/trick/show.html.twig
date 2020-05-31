@@ -6,6 +6,7 @@
 
     <!-- navbar -->
     {{ block('navbar') }}
+
     <!-- cover -->
     <section class="p-0">
       <div class="swiper-container text-white"
@@ -15,6 +16,21 @@
           <div class="swiper-slide vh-100">
             <div class="div-block-alert">
               {% for message in app.flashes('success') %}
+                <div class="alert alert-success">
+                  {{ message }}
+                </div>
+              {% endfor %}
+              {% for message in app.flashes('addComment') %}
+                <div class="alert alert-success">
+                  {{ message }}
+                </div>
+              {% endfor %}
+              {% for message in app.flashes('addVideo') %}
+                <div class="alert alert-success">
+                  {{ message }}
+                </div>
+              {% endfor %}
+              {% for message in app.flashes('addImage') %}
                 <div class="alert alert-success">
                   {{ message }}
                 </div>
@@ -30,7 +46,7 @@
               <div class="container">
                 <div class="row align-items-center vh-100">
                   <div class="col-md-8" data-swiper-parallax-y="-250%">
-                    <h1 class="display-2">{{ trick.name }}</h1>
+                    <h1 class="display-2">{{ trick.name|raw }}</h1>
                   </div>
                 </div>
               </div>
@@ -66,9 +82,15 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-10 col-lg-10">
-            <p>{{ trick.description }}</p>
+            {{ trick.description|raw }}
           </div>
         </div>
+        {% if app.user is not null %}
+        <div class="text-right col-md-11 col-lg-11 two-button-add-video-image">          
+          <div class="btn btn-info btn-add-video">Ajouter une vidéo</div>
+          <div class="btn btn-success btn-add-image">Ajouter une image</div>
+        </div>
+        {% endif %}
         <div class="row justify-content-center">
           <div class="col-md-10 col-lg-10 image-one-tick">
             <div class="owl-carousel owl-carousel-single" data-dots="true" data-nav="true" data-autoplay="true">
@@ -113,14 +135,12 @@
                   <div class="">{{ comment.user.username }}</div>
                   <div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
               </div>
-              <div class="">{{ comment.text }}</div>
+              <div class="">{{ comment.text|raw }}</div>
               </div>
             {% endfor %}
-        
-          <div class="navigation">
-              {{ knp_pagination_render(pagination) }}
-          </div>    
-                  
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>    
             {% if app.user is not null %}
               {{ form_start(commentForm) }}
                 {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
@@ -130,6 +150,40 @@
         </div>
       </div>
     </div>
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="text-right">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="show-add-video">
+            {{ form_start(formVideo) }}
+                {{form_widget(formVideo) }}
+                <button class="btn btn-info">
+                    Ajouter une vidéo
+                </button>
+            {{ form_end(formVideo) }}
+          </div>
+          <div class="show-add-image">
+            {{ form_start(formImage) }}
+              <span class="image-trick-edit">
+                {{form_widget(formImage) }}
+              </span>
+              <button class="btn btn-success">
+                Ajouter une image
+              </button>
+            {{ form_end(formImage) }}
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <!-- footer -->
     {{ block('footer') }}
 {% endblock %}

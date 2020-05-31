@@ -42,12 +42,39 @@ class TrickController extends AbstractController
     * @Route("/trick/create",name="trick_create")
     * @Route("/trick/edit/{id}", name="trick_edit")
     */
-    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em,SluggerInterface $slugger)
+    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em)
     {
         if(!$trick)
         {
             $trick = new Trick();
         }
+
+        $form = $this->createForm(TrickType::class,$trick);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid())
+        {
+            if(strpos($request->server->get('HTTP_REFERER'),'edit'))
+            {
+                $this->addFlash('update', 'Le trick a bien été modifié !');
+            }else {
+                $this->addFlash('success', 'Le trick a bien été créé !');
+            }
+            $em->persist($trick);
+            $em->flush();
+            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
+        }
+        return $this->render('trick/create.html.twig',[
+            'formTrick'          =>  $form->createView(),
+            'editMode'           =>  $trick->getId() !== null,
+        ]); 
+    }
+
+    /**
+    * @Route("/trick/{id}", name="trick_show")
+    */
+    public function show(Trick $trick,Request $request,EntityManagerInterface $em,
+    PaginatorInterface $paginator,CommentRepository $repo,SluggerInterface $slugger)
+    {
         $image = new Image();
         $formImage = $this->createForm(ImageType::class,$image);
         $formImage->handleRequest($request);
@@ -71,6 +98,7 @@ class TrickController extends AbstractController
                 $image->setTrick($trick);
                 //dump($image);
             }
+            $this->addFlash('addImage', 'L\'image a bien été ajoutée !');
             $em->persist($image);
             $em->flush();
 
@@ -82,40 +110,14 @@ class TrickController extends AbstractController
         $formVideo->handleRequest($request);
         if($formVideo->isSubmitted() && $formVideo->isValid())
         {
+            $this->addFlash('addVideo', 'La vidéo a bien été ajoutée!');
             $video->setTrick($trick);
             $em->persist($video);
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
-        $form = $this->createForm(TrickType::class,$trick);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            if(strpos($request->server->get('HTTP_REFERER'),'edit'))
-            {
-                $this->addFlash('update', 'Le trick a bien été modifié !');
-            }else {
-                $this->addFlash('success', 'Le trick a bien été créé !');
-            }
-            $em->persist($trick);
-            $em->flush();
-            return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
-        }
-        return $this->render('trick/create.html.twig',[
-            'formTrick'          =>  $form->createView(),
-            'editMode'           =>  $trick->getId() !== null,
-            'formVideo'          =>  $formVideo->createView(),
-            'formImage'          =>  $formImage->createView()
-        ]); 
-    }
 
-    /**
-    * @Route("/trick/{id}", name="trick_show")
-    */
-    public function show(Trick $trick,Request $request,EntityManagerInterface $em,
-    PaginatorInterface $paginator,CommentRepository $repo)
-    {
-        $commentQuery = $repo->createQueryBuilder('c')->orderBy('c.createdAt','DESC')->getQuery();
+        $commentQuery = $repo->createQueryBuilder('c')->where("c.trick = ".$trick->getId())->orderBy('c.createdAt','DESC')->getQuery();
         $pagination = $paginator->paginate($commentQuery,$request->query->getInt('p', 1),10);
         $comment = new Comment();
         $form = $this->createForm(CommentType::class,$comment);
@@ -129,11 +131,16 @@ class TrickController extends AbstractController
             $comment->setCreatedAt(new DateTime('NOW'));
             $em->persist($comment);
             $em->flush();
+            $this->addFlash('addComment', 'Votre commentaire a bien été ajouté !');
+            return $this->redirect($request->getUri());
         }
+
         return $this->render('trick/show.html.twig', [
             'trick'        =>  $trick,
             'commentForm'  =>  $form->createView(),
-            'pagination'   => $pagination
+            'pagination'   => $pagination,
+            'formVideo'          =>  $formVideo->createView(),
+            'formImage'          =>  $formImage->createView(),
         ]); 
     }
 

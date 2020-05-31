@@ -48,6 +48,7 @@ class SecurityController extends AbstractController
             $hash = $encoder->encodePassword($user,$user->getPassword());
             $user->setPassword($hash);
             $user->setActive(false);
+            $user->setPicture('avatar-default.png');
 
             $em->persist($user);
             $em->flush();
@@ -93,50 +94,6 @@ class SecurityController extends AbstractController
         return $this->render('security/validate.html.twig');
     }
 
-    // crypter un lien 
-    function getCrypteText($texte, $cle) 
-    {
-        srand((double)microtime()*1000000);
-        $cledencryptage = md5(rand(0,32000));
-        $compteur=0;
-        $variabletemp = "";
-        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
-            if( $compteur == strlen($cledencryptage) ) {
-                $compteur=0;
-            }
-            $variabletemp .= substr($cledencryptage, $compteur, 1).(substr($texte, $ctr, 1) ^ substr($cledencryptage, $compteur, 1));
-            $compteur++;
-        }
-        return base64_encode($this->getGenerationCle($variabletemp, $cle));
-    }
-  
-    // decrypter un lien 
-    function getDecrypteText($texte, $cle) 
-    {
-        $texte = $this->getGenerationCle(base64_decode($texte), $cle);
-        $variabletemp = "";
-        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
-            $md5 = substr($texte, $ctr, 1);
-            $ctr++;
-            $variabletemp .= (substr($texte, $ctr, 1) ^ $md5);
-        }
-        return $variabletemp;
-    }
-  
-    public function getGenerationCle($texte, $cledencryptage) 
-    {
-        $cledencryptage = md5($cledencryptage);
-        $compteur = 0;
-        $variabletemp = "";
-        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
-            if( $compteur == strlen($cledencryptage) ) {
-                $compteur=0;
-            }
-            $variabletemp .= substr($texte, $ctr, 1) ^ substr($cledencryptage, $compteur, 1);
-            $compteur++;
-        }
-        return $variabletemp;
-    }
 
     /**
      * @Route("/forget-password", name="forgetPassword")
@@ -201,7 +158,7 @@ class SecurityController extends AbstractController
         $token = $request->attributes->get('token');
         $decrypteId = $this->getDecrypteText($token,'id_reset_password');
         $user = $repo->findOneBy(array('id' => $decrypteId));
-        $token = $repoToken->findOneBy(array('user' => $decrypteId));
+        $token = $repoToken->findOneBy(array('token' => $token));
         if($token->getExpireAt() > new DateTime("Now"))
         {
             $tokenOnOff = 0;
@@ -218,6 +175,9 @@ class SecurityController extends AbstractController
             $em->persist($user);
             $em->flush();
 
+            $em->remove($token);
+            $em->flush();
+            
             $this->addFlash('success', 'Votre mot de passe a bien été modifié !');
 
             return $this->redirectToRoute('login');
@@ -235,4 +195,50 @@ class SecurityController extends AbstractController
     {
         throw new \Exception('Don\'t forget to activate logout in security.yaml');
     }
+
+    // crypter un lien 
+    function getCrypteText($texte, $cle) 
+    {
+        srand((double)microtime()*1000000);
+        $cledencryptage = md5(rand(0,32000));
+        $compteur=0;
+        $variabletemp = "";
+        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
+            if( $compteur == strlen($cledencryptage) ) {
+                $compteur=0;
+            }
+            $variabletemp .= substr($cledencryptage, $compteur, 1).(substr($texte, $ctr, 1) ^ substr($cledencryptage, $compteur, 1));
+            $compteur++;
+        }
+        return base64_encode($this->getGenerationCle($variabletemp, $cle));
+    }
+  
+    // decrypter un lien 
+    function getDecrypteText($texte, $cle) 
+    {
+        $texte = $this->getGenerationCle(base64_decode($texte), $cle);
+        $variabletemp = "";
+        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
+            $md5 = substr($texte, $ctr, 1);
+            $ctr++;
+            $variabletemp .= (substr($texte, $ctr, 1) ^ $md5);
+        }
+        return $variabletemp;
+    }
+  
+    public function getGenerationCle($texte, $cledencryptage) 
+    {
+        $cledencryptage = md5($cledencryptage);
+        $compteur = 0;
+        $variabletemp = "";
+        for($ctr = 0; $ctr < strlen($texte); $ctr++) {
+            if( $compteur == strlen($cledencryptage) ) {
+                $compteur=0;
+            }
+            $variabletemp .= substr($texte, $ctr, 1) ^ substr($cledencryptage, $compteur, 1);
+            $compteur++;
+        }
+        return $variabletemp;
+    }
+
 }
