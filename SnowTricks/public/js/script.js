@@ -1,8 +1,9 @@
 $( document ).ready(function() {
     $('.trash-trick').click(function(){
-        if(confirm('Vous êtes sûr de vouloir supprimer ce Trick ?')) {
-            location.reload();
-        }
+        alert('Le trick va être supprimer ?')
+    })
+    $('.delete-trick').click(function(){
+        alert('Le trick va être supprimer ?')
     })
     $(".down").click(function() {
          $('html, body').animate({

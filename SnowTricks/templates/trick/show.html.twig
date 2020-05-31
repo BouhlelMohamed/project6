@@ -143,7 +143,10 @@
             </div>    
             {% if app.user is not null %}
               {{ form_start(commentForm) }}
-                {{ form_row(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+                <div class="form-group">
+                  <label>Commentaire : </label>
+                  {{ form_widget(commentForm.text, {'attr': {'placeholder':'Votre commentaire'}} ) }}
+                </div>
                 <button class="btn btn-info">Envoyer</button>
               {{ form_end(commentForm) }}
             {% endif %}
@@ -151,37 +154,37 @@
       </div>
     </div>
 
-<div class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="text-right">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-          <div class="show-add-video">
-            {{ form_start(formVideo) }}
-                {{form_widget(formVideo) }}
-                <button class="btn btn-info">
-                    Ajouter une vidéo
-                </button>
-            {{ form_end(formVideo) }}
+    <div class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="text-right">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
-          <div class="show-add-image">
-            {{ form_start(formImage) }}
-              <span class="image-trick-edit">
-                {{form_widget(formImage) }}
-              </span>
-              <button class="btn btn-success">
-                Ajouter une image
-              </button>
-            {{ form_end(formImage) }}
+          <div class="modal-body">
+              <div class="show-add-video">
+                {{ form_start(formVideo) }}
+                    {{form_widget(formVideo) }}
+                    <button class="btn btn-info">
+                        Ajouter une vidéo
+                    </button>
+                {{ form_end(formVideo) }}
+              </div>
+              <div class="show-add-image">
+                {{ form_start(formImage) }}
+                  <span class="image-trick-edit">
+                    {{form_widget(formImage) }}
+                  </span>
+                  <button class="btn btn-success">
+                    Ajouter une image
+                  </button>
+                {{ form_end(formImage) }}
+              </div>
           </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
     <!-- footer -->

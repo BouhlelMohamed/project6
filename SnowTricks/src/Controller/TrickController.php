@@ -66,6 +66,7 @@ class TrickController extends AbstractController
         return $this->render('trick/create.html.twig',[
             'formTrick'          =>  $form->createView(),
             'editMode'           =>  $trick->getId() !== null,
+            'trickId'            =>  $trick->getId()
         ]); 
     }
 
@@ -116,7 +117,6 @@ class TrickController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);
         }
-
         $commentQuery = $repo->createQueryBuilder('c')->where("c.trick = ".$trick->getId())->orderBy('c.createdAt','DESC')->getQuery();
         $pagination = $paginator->paginate($commentQuery,$request->query->getInt('p', 1),10);
         $comment = new Comment();

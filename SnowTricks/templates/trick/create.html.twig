@@ -32,14 +32,34 @@
                 <div class="row align-items-center">
                   <div class="col-md-12">
                     {{ form_start(formTrick) }}
-                    {{ form_widget(formTrick) }}
-                      <button class="btn btn-info">
+                      <div class="form-group">
+                        <label>Nom : </label>
+                        {{ form_widget(formTrick.name) }}
+                      </div>
+                      <div class="form-group">
+                        <label>Description :</label>
+                        {{ form_widget(formTrick.description) }}
+                      </div>
+                      <div class="form-group">
+                        <label>Image en avant :</label>
+                        {{ form_widget(formTrick.bestImage) }}
+                      </div>
+                      <div class="form-group">
+                        <label>Catégories :</label>
+                        {{ form_widget(formTrick.category) }}
+                      </div>
                         {% if editMode %}
-                            Modifier
+                          <button class="btn btn-info">
+                              Modifier
+                          </button>
+                          <a href="{{ path('trick_delete', {'id': trickId}) }}" class="btn btn-danger delete-trick">
+                              Supprimer
+                          </a>
                         {% else %}
-                            Ajouter
+                          <button class="btn btn-info">
+                              Ajouter
+                          </button>
                         {% endif %}
-                      </button>
                     {{ form_end(formTrick) }}
                   </div>
                 </div>
