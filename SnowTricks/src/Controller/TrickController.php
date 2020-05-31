@@ -22,6 +22,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TrickController extends AbstractController
 {
@@ -40,19 +41,37 @@ class TrickController extends AbstractController
     /**
     * Routes multiples 
     * @Route("/trick/create",name="trick_create")
-    * @Route("/trick/edit/{id}", name="trick_edit")
+    * @Route("/trick/edit/{id<[0-9]+>}", name="trick_edit")
     */
-    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em)
+    public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em,
+    SluggerInterface $slugger)
     {
+        
         if(!$trick)
         {
             $trick = new Trick();
         }
-
         $form = $this->createForm(TrickType::class,$trick);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid())
         {
+            $imageName = $form->get('bestImage')->getData();
+            if ($imageName) {
+                $nameFile = pathinfo($imageName->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($nameFile);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageName->guessExtension();
+
+                try {
+                    $imageName->move(
+                        $this->getParameter('directory_images_tricks'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    echo 'error';
+                }
+                $trick->setBestImage($newFilename);
+                //dump($image);
+            }
             if(strpos($request->server->get('HTTP_REFERER'),'edit'))
             {
                 $this->addFlash('update', 'Le trick a bien été modifié !');
@@ -76,6 +95,7 @@ class TrickController extends AbstractController
     public function show(Trick $trick,Request $request,EntityManagerInterface $em,
     PaginatorInterface $paginator,CommentRepository $repo,SluggerInterface $slugger)
     {
+        $category = $trick->getCategory()->getName();
         $image = new Image();
         $formImage = $this->createForm(ImageType::class,$image);
         $formImage->handleRequest($request);
@@ -141,6 +161,7 @@ class TrickController extends AbstractController
             'pagination'   => $pagination,
             'formVideo'          =>  $formVideo->createView(),
             'formImage'          =>  $formImage->createView(),
+            'category'          => $category
         ]); 
     }
 

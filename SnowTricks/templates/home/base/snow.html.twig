@@ -32,13 +32,10 @@
 									</a>
 								</div>
 							{% endif %}
-							{% for image in trick.images|slice(0,1) %}
-								<div class="tile-image" style="background-image: url(images/tricks/{{ image.name }})"></div>
-							{% endfor %}
+								<div class="tile-image" style="background-image: url(images/tricks/{{ trick.bestImage }})"></div>
 								<a href="{{ path('trick_show', {'id': trick.id }) }}">
 									<div class="tile-footer">
-									<span class="eyebrow mb-1">{{ trick.name }}</span>
-									<h3>{{ trick.description|slice(0,24) }}...</h3>
+										<h3>{{ trick.name|raw|capitalize }}</h3>
 									</div>
 								</a>
 							</article>

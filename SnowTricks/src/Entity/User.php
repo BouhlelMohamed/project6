@@ -40,7 +40,7 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255,unique=true)
+     * @ORM\Column(type="string", length=255,unique=true,nullable=false)
      * @Assert\Email
      */
     private $email;

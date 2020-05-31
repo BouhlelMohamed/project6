@@ -131,3 +131,14 @@ body
 .trumbowyg-box{
 	background-color: white;
 }
+.video-grid{
+	margin-top: 90px;
+	margin-bottom: 70px;
+	padding-bottom: 80px;
+}
+.nav-item{
+	padding-left: 10px!important;
+}
+.class-category{
+	display: ruby;
+}

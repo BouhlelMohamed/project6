@@ -46,7 +46,7 @@
               <div class="container">
                 <div class="row align-items-center vh-100">
                   <div class="col-md-8" data-swiper-parallax-y="-250%">
-                    <h1 class="display-2">{{ trick.name|raw }}</h1>
+                    <h1 class="display-2">{{ trick.name|raw|capitalize }}</h1>
                   </div>
                 </div>
               </div>
@@ -69,14 +69,14 @@
     <section>
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-md-10 col-lg-10">
-            <p class="lead">
-              {{ trick.name }}
-              {% for category in trick.category %}
-                <p class="lead">{{ category.name }}</p>
-              {% endfor %}
-            </p>
-             
+          <div class="col-md-10 col-lg-10 text-right">
+            <div class="class-category">
+              <p class="lead">
+                Catégorie : 
+                <p class="lead"> {{ category }}</p>
+              </p>
+            </div>
+
             <hr class="w-25">
           </div>
         </div>
@@ -104,30 +104,24 @@
         </div>
       </div>
     </section>
-        <br><br><br>        <br><br><br>
-
-        <div class="row justify-content-center">
-          <div class="col-md-10 col-lg-10 image-one-tick">
-            {% for video in trick.videos %}
-              <iframe width="450" height="300" 
-                src="{{ video.link}}" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; 
-                encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
-            {% endfor %}
-          </div>
-        </div>
-        <br><br><br>
-        <br><br><br>
 
     <div class="container container-comment">
+        <div class="row justify-content-center video-grid">
+            {% for video in trick.videos %}
+              <div class="col-4 image-one-tick">
+                  <iframe width="380" height="300" 
+                    src="{{ video.link}}" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; 
+                    encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                  </iframe>
+                </div>
+            {% endfor %}
+        </div>
       <div class="row justify-content-center">
         <div class="col-md-10 col-lg-10">
-
             <h1>Commentaires ({{ pagination.getTotalItemCount }})</h1>
-
             {% for comment in pagination %}
               <div>
                   <div class="content-comment">
