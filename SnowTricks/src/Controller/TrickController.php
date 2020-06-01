@@ -71,7 +71,10 @@ class TrickController extends AbstractController
                 }
                 $trick->setBestImage($newFilename);
                 //dump($image);
+            }else{
+                $trick->setBestImage('stale.jpg');
             }
+            
             if(strpos($request->server->get('HTTP_REFERER'),'edit'))
             {
                 $this->addFlash('update', 'Le trick a bien été modifié !');
@@ -161,7 +164,7 @@ class TrickController extends AbstractController
             'pagination'   => $pagination,
             'formVideo'          =>  $formVideo->createView(),
             'formImage'          =>  $formImage->createView(),
-            'category'          => $category
+            'category'           => $category
         ]); 
     }
 
