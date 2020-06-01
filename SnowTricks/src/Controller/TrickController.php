@@ -12,17 +12,19 @@ use App\Form\ImageType;
 use App\Form\TrickType;
 use App\Form\VideoType;
 use App\Form\CommentType;
-use App\Repository\TrickRepository;
+use App\Repository\ImageRepository;
 
+use App\Repository\TrickRepository;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 class TrickController extends AbstractController
 {
@@ -171,12 +173,19 @@ class TrickController extends AbstractController
     /**
     * @Route("/trick/delete/{id}", name="trick_delete")
     */
-    public function delete(Trick $trick,EntityManagerInterface $em)
+    public function delete(Trick $trick,EntityManagerInterface $em,ImageRepository $repo)
     {
+        // $images = $repo->findBy(['trick'=>$trick]);
+        // foreach($images as $image){
+        //     $filename = $image->getName();
+        //     $filesystem = new Filesystem();
+        //     //$filesystem->remove($filename);
+        //     $filesystem->remove('/images/tricks/'.$filename);            
+        //     dd($filesystem->remove('/images/tricks/'.$filename));
+        // }
         $em->remove($trick);
         $em->flush();
         $this->addFlash('danger', 'Le trick a bien été supprimé !');
         return $this->redirectToRoute('allTricks');
     }
-
 }

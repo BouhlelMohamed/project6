@@ -65,9 +65,7 @@ $( document ).ready(function() {
         $(this).next('.custom-file-label').html(fileName);
     })
 
-    if($('.show').hasClass('clicked')){
         $('.navbar-toggler').click(function(){
-            $('#navbarSupportedContent').css('display','none');
-        })
-    }
+            $('#navbarSupportedContent').toggle();
+         })
 });
