@@ -193,7 +193,7 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+        throw new \Exception('Erreur');
     }
 
     // crypter un lien 
