@@ -171,18 +171,21 @@ class TrickController extends AbstractController
     }
 
     /**
+    * @Route("/trick/delete/image/{id}", name="trick_delete_image")
+    */
+    public function deleteImage(Image $image,EntityManagerInterface $em)
+    {
+        $em->remove($image);
+        $em->flush();
+        $this->addFlash('danger', 'L\'image a bien été supprimée !');
+        return $this->redirectToRoute('allTricks');
+    }
+
+    /**
     * @Route("/trick/delete/{id}", name="trick_delete")
     */
-    public function delete(Trick $trick,EntityManagerInterface $em,ImageRepository $repo)
+    public function delete(Trick $trick,EntityManagerInterface $em)
     {
-        // $images = $repo->findBy(['trick'=>$trick]);
-        // foreach($images as $image){
-        //     $filename = $image->getName();
-        //     $filesystem = new Filesystem();
-        //     //$filesystem->remove($filename);
-        //     $filesystem->remove('/images/tricks/'.$filename);            
-        //     dd($filesystem->remove('/images/tricks/'.$filename));
-        // }
         $em->remove($trick);
         $em->flush();
         $this->addFlash('danger', 'Le trick a bien été supprimé !');
