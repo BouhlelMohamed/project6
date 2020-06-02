@@ -36,15 +36,20 @@ class TrickRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Trick
+    
+    public function findOtherInfoTrick($id,$type)
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "
+            SELECT ty.* FROM $type ty
+            WHERE ty.trick_id = :id
+            GROUP BY ty.id
+            ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    
+        return $stmt->fetchAll();
         ;
     }
-    */
+    
 }

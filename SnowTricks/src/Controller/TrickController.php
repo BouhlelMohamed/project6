@@ -46,9 +46,10 @@ class TrickController extends AbstractController
     * @Route("/trick/edit/{id<[0-9]+>}", name="trick_edit")
     */
     public function formTrick(Trick $trick = null,Request $request,EntityManagerInterface $em,
-    SluggerInterface $slugger)
+    SluggerInterface $slugger,TrickRepository $repo)
     {
-        
+        // $videos = $trick->getVideos()->getIterator();
+        // $images = $trick->getImages()->getIterator();
         if(!$trick)
         {
             $trick = new Trick();
@@ -90,7 +91,8 @@ class TrickController extends AbstractController
         return $this->render('trick/create.html.twig',[
             'formTrick'          =>  $form->createView(),
             'editMode'           =>  $trick->getId() !== null,
-            'trickId'            =>  $trick->getId()
+            'trickId'            =>  $trick->getId(),
+            'trick'             => $trick
         ]); 
     }
 
@@ -170,6 +172,17 @@ class TrickController extends AbstractController
         ]); 
     }
 
+        /**
+    * @Route("/trick/delete/video/{id}", name="trick_delete_video")
+    */
+    public function deleteVideo(Video $video,EntityManagerInterface $em,Request $request)
+    {
+        $em->remove($video);
+        $em->flush();
+        $this->addFlash('danger_video', 'La vidéo a bien été supprimée !');
+        return $this->redirectToRoute('trick_edit', ['id' => $video->getTrick()->getId()]);
+    }
+
     /**
     * @Route("/trick/delete/image/{id}", name="trick_delete_image")
     */
@@ -177,8 +190,8 @@ class TrickController extends AbstractController
     {
         $em->remove($image);
         $em->flush();
-        $this->addFlash('danger', 'L\'image a bien été supprimée !');
-        return $this->redirectToRoute('allTricks');
+        $this->addFlash('danger_image', 'L\'image a bien été supprimée !');
+        return $this->redirectToRoute('trick_edit', ['id' => $image->getTrick()->getId()]);
     }
 
     /**

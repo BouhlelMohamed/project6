@@ -9,10 +9,20 @@
 {% endblock %}
 
 {% block body %}
-
     <!-- navbar -->
     {{ block('navbar') }}
-
+    <div class="div-block-alert">
+      {% for message in app.flashes('danger_image') %}
+        <div class="alert alert-info">
+          {{ message }}
+        </div>
+      {% endfor %}
+      {% for message in app.flashes('danger_video') %}
+        <div class="alert alert-info">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
     <section>
       <div class="image image-overlay image-cover" style="background-image:url({{ asset('images/slider/thumb-1920-183974.jpg') }})"
       data-top-top="transform: translateY(0px);" 
@@ -49,6 +59,30 @@
                         {{ form_widget(formTrick.category) }}
                       </div>
                         {% if editMode %}
+                          <label>Les images :</label>
+                          <div class="form-group delete-image-edit-trick">
+                            {% for image in trick.images %}
+                              <div class="w-75">
+                                  <a href="{{ path('trick_delete_image', {'id': image.id}) }}" class="delete-slug-image-in-trick">X</a>
+                                  <img class="mr-3 mb-1 avatar avatar-xl" src="{{ asset('images/tricks/') }}{{ image.name }}">
+                              </div>
+                            {% endfor %}
+                          </div>
+                          <label>Les vidéos :</label>
+                          <div class="row" style="margin-left:3px">
+                            {% for video in trick.videos %} 
+                              <div style="display:grid" class="text-center mb-5">
+                                <iframe width="200" height="150" class="mr-2 mb-2" 
+                                  src="{{ video.link}}" 
+                                  frameborder="0" 
+                                  allow="accelerometer; autoplay; 
+                                  encrypted-media; gyroscope; picture-in-picture" 
+                                  allowfullscreen>
+                                </iframe>
+                                <a href="{{ path('trick_delete_video', {'id': video.id}) }}" class="btn text-danger">Supprimer</a>
+                              </div>
+                            {% endfor %}
+                          </div>
                           <button class="btn btn-info">
                               Modifier
                           </button>
