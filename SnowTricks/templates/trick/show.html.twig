@@ -127,7 +127,7 @@
                   <div class="content-comment">
                   <img src="../uploads/avatars/{{ comment.user.picture }}" class="rounded-circle avatar-in-comment"> 
                   <div class="">{{ comment.user.username }}</div>
-                  <div class="">{{ comment.createdAt|date("h:i:s - d/m/Y") }}</div>
+                  <div class="">{{ comment.createdAt|date("H:i:s - d/m/Y") }}</div>
               </div>
               <div class="">{{ comment.text|raw }}</div>
               </div>
@@ -159,16 +159,21 @@
           <div class="modal-body">
               <div class="show-add-video">
                 {{ form_start(formVideo) }}
-                    {{form_widget(formVideo) }}
+                    <h4>Ajouter une vidéo</h4>
+                    <div class="form-group">
+                      <label>Lien : </label>
+                      {{form_widget(formVideo.link) }}
+                    </div>
                     <button class="btn btn-info">
                         Ajouter une vidéo
                     </button>
                 {{ form_end(formVideo) }}
               </div>
               <div class="show-add-image">
+                <h4>Ajouter une image</h4>
                 {{ form_start(formImage) }}
                   <span class="image-trick-edit">
-                    {{form_widget(formImage) }}
+                    {{form_widget(formImage.name) }}
                   </span>
                   <button class="btn btn-success">
                     Ajouter une image

@@ -156,3 +156,35 @@ body
 	align-items: center;
 	color: gray;
 }
+
+#container-404 {
+	background-color: black;
+	width: 600px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  }
+  
+  .line {
+	fill: none;
+	stroke: #f5eded;
+	stroke-width: 12;
+	stroke-dasharray: 200 100;
+  }
+  
+  .anim {
+	-webkit-animation: swirls 2s linear infinite;
+	-moz-animation: swirls 2s linear infinite;
+	-o-animation: swirls 2s linear infinite;
+	animation: swirls 2s linear infinite;
+  }
+  
+  @keyframes swirls {
+	from {
+	  stroke-dashoffset: 0;
+	}
+	to {
+	  stroke-dashoffset: 300;
+	}
+  }

@@ -57,9 +57,9 @@ class SecurityController extends AbstractController
             // Create a Notification that has to be sent
             // using the "email" channel
             $notification = (new Notification('Validation de votre compte', ['email']))
-                ->content('Bonjour, voici le lien pour valider votre compte. <br>  
-                http://localhost:8000/validate/'.$cryptId);
-
+                ->content(
+                'Bonjour, voici le lien pour valider votre compte. 
+                http://p6.mohamed-bouhlel.com/validate/'.$cryptId);
             // The receiver of the Notification
             $recipient = new AdminRecipient(
                 $user->getEmail(),
@@ -124,9 +124,10 @@ class SecurityController extends AbstractController
                 // Create a Notification that has to be sent
                 // using the "email" channel
                 $notification = (new Notification('Nouveau mot de passe', ['email']))
-                ->content('Bonjour, voici le lien pour changer votre mot de passe.  
-                http://localhost:8000/reset-password/'.$cryptId . "
-                    Attention le lien expire dans 24H!!");
+                ->content(
+                'Bonjour, voici le lien pour changer votre mot de passe.  
+                http://p6.mohamed-bouhlel.com/reset-password/'.$cryptId . "
+                Attention le lien expire dans 24H!!");
 
                 // The receiver of the Notification
                 $recipient = new AdminRecipient(
@@ -141,7 +142,7 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('login');
 
             }else {
-                echo "notification  email pas trouvé ";
+                echo "Votre email n'existe pas";
             }
         }
         return $this->render('security/forgetPassword.html.twig',[
