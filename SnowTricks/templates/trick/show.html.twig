@@ -71,10 +71,16 @@
         <div class="row justify-content-center">
           <div class="col-md-10 col-lg-10 text-right">
             <div class="class-category">
-              <p class="lead">
-                Catégorie : 
-                <p class="lead"> {{ category }}</p>
-              </p>
+              <div class="d-flex w-50">
+                <p class="lead">
+                  Catégorie : 
+                  <p class="lead"> {{ category }}</p>
+                </p>
+              </div>
+              <div class="w-50">
+                  <p class="lead" style="font-size:12px;">Créé le {{ trick.createdAt|date("H:i:s - d/m/Y") }}</p>
+                  <p class="lead" style="font-size:12px;">Mis à jour le {{ trick.updateAt|date("H:i:s - d/m/Y") }}</p>
+              </div>
             </div>
 
             <hr class="w-25">

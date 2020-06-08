@@ -53,6 +53,10 @@ class TrickController extends AbstractController
         if(!$trick)
         {
             $trick = new Trick();
+            $trick->setCreatedAt(new DateTime('NOW'));
+            $trick->setUpdateAt(new DateTime('NOW'));
+        }else {
+            $trick->setUpdateAt(new DateTime('NOW'));
         }
         $form = $this->createForm(TrickType::class,$trick);
         $form->handleRequest($request);
@@ -74,16 +78,19 @@ class TrickController extends AbstractController
                 }
                 $trick->setBestImage($newFilename);
                 //dump($image);
-            }else{
+            }
+
+            if(empty($trick->getBestImage())){
                 $trick->setBestImage('stale.jpg');
             }
-            
+
             if(strpos($request->server->get('HTTP_REFERER'),'edit'))
             {
                 $this->addFlash('update', 'Le trick a bien été modifié !');
             }else {
                 $this->addFlash('success', 'Le trick a bien été créé !');
             }
+
             $em->persist($trick);
             $em->flush();
             return $this->redirectToRoute('trick_show', ['id' => $trick->getId()]);

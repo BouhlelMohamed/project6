@@ -32,7 +32,7 @@ class UserTest extends KernelTestCase
 
     public function testInvalidEntity(){
         $this->assertHasErrors($this->getEntity()
-        ->setPassword('sasa'),1);
+        ->setPassword('test'),1);
     }
 
     public function testNotBlankEmailEntity(){
