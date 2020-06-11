@@ -27,5 +27,6 @@ php bin/console doctrine:schema:update --force
 PHP -S localhost:8080
 
 Existing users
-login 	          password
-admin@admin.com 	123456789
+login    : admin@admin.com  	          
+password : 123456789
+	
