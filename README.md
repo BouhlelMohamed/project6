@@ -18,11 +18,7 @@ composer install
 
 php bin/console doctrine:database:create
 
-4 - Create schema :
-
-php bin/console doctrine:schema:update --force
-
-6 - Run the server :
+4 - Run the server :
 
 PHP -S localhost:8080
 
